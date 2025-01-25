@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/dwdwow/golimiter"
 	"golang.org/x/sync/errgroup"
-	"golang.org/x/time/rate"
 )
 
 var (
@@ -104,7 +104,7 @@ type SimpleGetter[D any] struct {
 	Path              string
 	Params            url.Values
 	Headers           map[string][]string
-	Limiter           *rate.Limiter
+	Limiter           *golimiter.ReqLimiter
 	RespStatusHandler func(resp *http.Response) error
 	RespBodyUnmarshal func(body []byte) (D, error)
 	Option            *GetterOption
@@ -144,10 +144,7 @@ func (g *SimpleGetter[D]) Do(ctx context.Context) (D, error) {
 
 func (g *SimpleGetter[D]) do(ctx context.Context) (D, error) {
 	if g.Limiter != nil {
-		err := g.Limiter.Wait(ctx)
-		if err != nil {
-			return *new(D), err
-		}
+		g.Limiter.Wait(ctx)
 	}
 	ul := fmt.Sprintf("%s/%s", g.BaseURL, strings.Trim(g.Path, "/"))
 	if len(g.Params) > 0 {
@@ -358,7 +355,7 @@ type PagingGetter[D any] struct {
 	Path         string
 	Params       url.Values
 	Headers      map[string][]string
-	Limiter      *rate.Limiter
+	Limiter      *golimiter.ReqLimiter
 	GetterOption *GetterOption
 	PagingParams *PagingParams[D]
 }

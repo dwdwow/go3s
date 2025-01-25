@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	"golang.org/x/time/rate"
+	"github.com/dwdwow/golimiter"
 )
 
 const (
@@ -23,8 +23,8 @@ const (
 )
 
 var (
-	V2Limiter = rate.NewLimiter(rate.Every(time.Minute), V2_MAX_REQUESTS_PER_MINUTE / 2)
-	V3Limiter = rate.NewLimiter(rate.Every(time.Minute), V3_MAX_REQUESTS_PER_MINUTE / 2)
+	V2Limiter = golimiter.NewReqLimiter(time.Minute, V2_MAX_REQUESTS_PER_MINUTE/2)
+	V3Limiter = golimiter.NewReqLimiter(time.Minute, V3_MAX_REQUESTS_PER_MINUTE/2)
 )
 
 type RespData[D any] struct {
@@ -771,11 +771,11 @@ type NFTCollectionItem struct {
 }
 
 type Client struct {
-	Limiter *rate.Limiter
+	Limiter *golimiter.ReqLimiter
 	Headers map[string][]string
 }
 
-func NewClient(auth_token string, limiter *rate.Limiter) *Client {
+func NewClient(auth_token string, limiter *golimiter.ReqLimiter) *Client {
 	if auth_token == "" {
 		auth_token = os.Getenv("SOLSCAN_AUTH_TOKEN")
 	}
