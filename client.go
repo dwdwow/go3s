@@ -826,7 +826,7 @@ type AccountTransfersParams struct {
 }
 
 func (c *Client) AccountTransfers(ctx context.Context, address string, optParams *AccountTransfersParams) ([]Transfer, error) {
-	params := createParams(optParams, "address", address)
+	params := CreateParams(optParams, "address", address)
 	sg := SimpleGetter[[]Transfer]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/transfer",
@@ -838,7 +838,7 @@ func (c *Client) AccountTransfers(ctx context.Context, address string, optParams
 }
 
 func (c *Client) AccountTransfersPagingQuery(ctx context.Context, startPage, totalSize, maxConcurrency int64, address string, optParams *AccountTransfersParams) ([]Transfer, error) {
-	params := createParams(optParams, "address", address)
+	params := CreateParams(optParams, "address", address)
 	g := PagingGetter[[]Transfer]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/transfer",
@@ -868,7 +868,7 @@ type AccountTokenAccountsParams struct {
 }
 
 func (c *Client) AccountTokenAccounts(ctx context.Context, address string, optParams *AccountTokenAccountsParams) ([]TokenAccount, error) {
-	params := createParams(optParams, "address", address)
+	params := CreateParams(optParams, "address", address)
 	sg := SimpleGetter[[]TokenAccount]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/token-accounts",
@@ -880,7 +880,7 @@ func (c *Client) AccountTokenAccounts(ctx context.Context, address string, optPa
 }
 
 func (c *Client) AccountTokenAccountsPagingQuery(ctx context.Context, startPage, totalSize, maxConcurrency int64, address string, optParams *AccountTokenAccountsParams) ([]TokenAccount, error) {
-	params := createParams(optParams, "address", address)
+	params := CreateParams(optParams, "address", address)
 	g := PagingGetter[[]TokenAccount]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/token-accounts",
@@ -916,7 +916,7 @@ type AccountDefiActivitiesParams struct {
 }
 
 func (c *Client) AccountDefiActivities(ctx context.Context, address string, optParams *AccountDefiActivitiesParams) ([]DefiActivity, error) {
-	params := createParams(optParams, "address", address)
+	params := CreateParams(optParams, "address", address)
 	sg := SimpleGetter[[]DefiActivity]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/defi/activities",
@@ -928,7 +928,7 @@ func (c *Client) AccountDefiActivities(ctx context.Context, address string, optP
 }
 
 func (c *Client) AccountDefiActivitiesPagingQuery(ctx context.Context, startPage, totalSize, maxConcurrency int64, address string, optParams *AccountDefiActivitiesParams) ([]DefiActivity, error) {
-	params := createParams(optParams, "address", address)
+	params := CreateParams(optParams, "address", address)
 	g := PagingGetter[[]DefiActivity]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/defi/activities",
@@ -966,7 +966,7 @@ func (c *Client) AccountBalanceChanges(ctx context.Context, address string, optP
 	sg := SimpleGetter[[]AccountChangeActivity]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/balance_change",
-		Params:  createParams(optParams, "address", address),
+		Params:  CreateParams(optParams, "address", address),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -977,7 +977,7 @@ func (c *Client) AccountBalanceChangesPagingQuery(ctx context.Context, startPage
 	g := PagingGetter[[]AccountChangeActivity]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/balance_change",
-		Params:  createParams(optParams, "address", address),
+		Params:  CreateParams(optParams, "address", address),
 		Headers: c.headers,
 		Limiter: c.limiter,
 		GetterOption: &GetterOption{
@@ -1004,7 +1004,7 @@ func (c *Client) AccountTransactions(ctx context.Context, address string, optPar
 	sg := SimpleGetter[[]Transaction]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/transactions",
-		Params:  createParams(optParams, "address", address),
+		Params:  CreateParams(optParams, "address", address),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1026,7 +1026,7 @@ func (c *Client) AccountTransactionsPagingQuery(ctx context.Context, totalSize i
 	pageNum := int(math.Ceil(float64(totalSize) / float64(SmallPageSize40)))
 	for i := 0; i < pageNum; i++ {
 		optParams.Before = before
-		g.Params = createParams(optParams, "address", address)
+		g.Params = CreateParams(optParams, "address", address)
 		newTxs, err := g.Do(ctx)
 		if err != nil {
 			return nil, err
@@ -1049,7 +1049,7 @@ func (c *Client) AccountStakes(ctx context.Context, address string, optParams *A
 	sg := SimpleGetter[[]AccountStake]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/stake",
-		Params:  createParams(optParams, "address", address),
+		Params:  CreateParams(optParams, "address", address),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1062,7 +1062,7 @@ func (c *Client) AccountStakesPagingQuery(ctx context.Context, startPage, totalS
 		Path:    "/account/stake",
 		Headers: c.headers,
 		Limiter: c.limiter,
-		Params:  createParams(optParams, "address", address),
+		Params:  CreateParams(optParams, "address", address),
 		PagingParams: &PagingParams[[]AccountStake]{
 			StartPage:         startPage,
 			TotalSize:         totalSize,
@@ -1114,7 +1114,7 @@ func (c *Client) AccountTransfersExport(ctx context.Context, address string, opt
 	sg := SimpleGetter[[]byte]{
 		BaseURL:           PRO_BASE_URL,
 		Path:              "/account/transfer/export",
-		Params:            createParams(optParams, "address", address),
+		Params:            CreateParams(optParams, "address", address),
 		Headers:           c.headers,
 		Limiter:           c.limiter,
 		RespBodyUnmarshal: ExportBodyUnmarshal,
@@ -1139,7 +1139,7 @@ func (c *Client) TokenTransfers(ctx context.Context, address string, optParams *
 	sg := SimpleGetter[[]Transfer]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/transfer",
-		Params:  createParams(optParams, "address", address),
+		Params:  CreateParams(optParams, "address", address),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1150,7 +1150,7 @@ func (c *Client) TokenTransfersPagingQuery(ctx context.Context, startPage, total
 	g := PagingGetter[[]Transfer]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/transfer",
-		Params:  createParams(optParams, "address", address),
+		Params:  CreateParams(optParams, "address", address),
 		Headers: c.headers,
 		Limiter: c.limiter,
 		GetterOption: &GetterOption{
@@ -1185,7 +1185,7 @@ func (c *Client) TokenDefiActivities(ctx context.Context, address string, optPar
 	sg := SimpleGetter[[]DefiActivity]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/defi/activities",
-		Params:  createParams(optParams, "address", address),
+		Params:  CreateParams(optParams, "address", address),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1196,7 +1196,7 @@ func (c *Client) TokenDefiActivitiesPagingQuery(ctx context.Context, startPage, 
 	g := PagingGetter[[]DefiActivity]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/defi/activities",
-		Params:  createParams(optParams, "address", address),
+		Params:  CreateParams(optParams, "address", address),
 		Headers: c.headers,
 		Limiter: c.limiter,
 		GetterOption: &GetterOption{
@@ -1225,7 +1225,7 @@ func (c *Client) TokenMarkets(ctx context.Context, token_pair []string, optParam
 	sg := SimpleGetter[[]Market]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/markets",
-		Params:  createParams(optParams, "token[]", token_pair[0], "token[]", token_pair[1]),
+		Params:  CreateParams(optParams, "token[]", token_pair[0], "token[]", token_pair[1]),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1236,7 +1236,7 @@ func (c *Client) TokenMarketsPagingQuery(ctx context.Context, startPage, totalSi
 	g := PagingGetter[[]Market]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/markets",
-		Params:  createParams(optParams, "token[]", token_pair[0], "token[]", token_pair[1]),
+		Params:  CreateParams(optParams, "token[]", token_pair[0], "token[]", token_pair[1]),
 		Headers: c.headers,
 		Limiter: c.limiter,
 		GetterOption: &GetterOption{
@@ -1265,7 +1265,7 @@ func (c *Client) TokenList(ctx context.Context, optParams *TokenListParams) ([]T
 	sg := SimpleGetter[[]Token]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/list",
-		Params:  createParams(optParams),
+		Params:  CreateParams(optParams),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1276,7 +1276,7 @@ func (c *Client) TokenListPagingQuery(ctx context.Context, startPage, totalSize,
 	g := PagingGetter[[]Token]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/list",
-		Params:  createParams(optParams),
+		Params:  CreateParams(optParams),
 		Headers: c.headers,
 		Limiter: c.limiter,
 		GetterOption: &GetterOption{
@@ -1331,7 +1331,7 @@ func (c *Client) TokenHolders(ctx context.Context, address string, optParams *To
 	sg := SimpleGetter[RespDataWithTotal[TokenHolder]]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/holders",
-		Params:  createParams(optParams, "address", address),
+		Params:  CreateParams(optParams, "address", address),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1342,7 +1342,7 @@ func (c *Client) TokenHoldersPagingQuery(ctx context.Context, startPage, totalSi
 	g := PagingGetter[RespDataWithTotal[TokenHolder]]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/holders",
-		Params:  createParams(optParams, "address", address),
+		Params:  CreateParams(optParams, "address", address),
 		Headers: c.headers,
 		Limiter: c.limiter,
 		GetterOption: &GetterOption{
@@ -1391,7 +1391,7 @@ func (c *Client) NFTNews(ctx context.Context, optParams *NFTNewsParams) (RespDat
 	sg := SimpleGetter[RespDataWithTotal[NFTInfo]]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/news",
-		Params:  createParams(optParams),
+		Params:  CreateParams(optParams),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1402,7 +1402,7 @@ func (c *Client) NFTNewsPagingQuery(ctx context.Context, startPage, totalSize, m
 	g := PagingGetter[RespDataWithTotal[NFTInfo]]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/news",
-		Params:  createParams(optParams),
+		Params:  CreateParams(optParams),
 		Headers: c.headers,
 		Limiter: c.limiter,
 		GetterOption: &GetterOption{
@@ -1438,7 +1438,7 @@ func (c *Client) NFTActivities(ctx context.Context, optParams *NFTActivitiesPara
 	sg := SimpleGetter[[]NFTActivity]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/activities",
-		Params:  createParams(optParams),
+		Params:  CreateParams(optParams),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1449,7 +1449,7 @@ func (c *Client) NFTActivitiesPagingQuery(ctx context.Context, startPage, totalS
 	g := PagingGetter[[]NFTActivity]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/activities",
-		Params:  createParams(optParams),
+		Params:  CreateParams(optParams),
 		Headers: c.headers,
 		Limiter: c.limiter,
 		GetterOption: &GetterOption{
@@ -1479,7 +1479,7 @@ func (c *Client) NFTCollectionList(ctx context.Context, optParams *NFTCollection
 	sg := SimpleGetter[[]NFTCollection]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/collection/lists",
-		Params:  createParams(optParams),
+		Params:  CreateParams(optParams),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1490,7 +1490,7 @@ func (c *Client) NFTCollectionListPagingQuery(ctx context.Context, startPage, to
 	g := PagingGetter[[]NFTCollection]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/collection/lists",
-		Params:  createParams(optParams),
+		Params:  CreateParams(optParams),
 		Headers: c.headers,
 		Limiter: c.limiter,
 		GetterOption: &GetterOption{
@@ -1518,7 +1518,7 @@ func (c *Client) NFTCollectionItems(ctx context.Context, collection string, optP
 	sg := SimpleGetter[[]NFTCollectionItem]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/collection/items",
-		Params:  createParams(optParams, "collection", collection),
+		Params:  CreateParams(optParams, "collection", collection),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1529,7 +1529,7 @@ func (c *Client) NFTCollectionItemsPagingQuery(ctx context.Context, startPage, t
 	g := PagingGetter[[]NFTCollectionItem]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/collection/items",
-		Params:  createParams(optParams, "collection", collection),
+		Params:  CreateParams(optParams, "collection", collection),
 		Headers: c.headers,
 		Limiter: c.limiter,
 		GetterOption: &GetterOption{
@@ -1556,7 +1556,7 @@ func (c *Client) TxLast(ctx context.Context, optParams *TxLastParams) ([]Transac
 	sg := SimpleGetter[[]Transaction]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/transaction/last",
-		Params:  createParams(optParams),
+		Params:  CreateParams(optParams),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1605,7 +1605,7 @@ func (c *Client) BlockTransactions(ctx context.Context, block int64, optParams *
 	sg := SimpleGetter[RespDataWithTotal[Transaction]]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/block/transactions",
-		Params:  createParams(optParams, "block", strconv.FormatInt(block, 10)),
+		Params:  CreateParams(optParams, "block", strconv.FormatInt(block, 10)),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1616,7 +1616,7 @@ func (c *Client) BlockTransactionsPagingQuery(ctx context.Context, startPage, to
 	g := PagingGetter[RespDataWithTotal[Transaction]]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/block/transactions",
-		Params:  createParams(optParams, "block", strconv.FormatInt(block, 10)),
+		Params:  CreateParams(optParams, "block", strconv.FormatInt(block, 10)),
 		Headers: c.headers,
 		Limiter: c.limiter,
 		GetterOption: &GetterOption{
@@ -1657,7 +1657,7 @@ func (c *Client) PoolMarketList(ctx context.Context, optParams *PoolMarketListPa
 	sg := SimpleGetter[[]PoolMarket]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/market/list",
-		Params:  createParams(optParams),
+		Params:  CreateParams(optParams),
 		Headers: c.headers,
 		Limiter: c.limiter,
 	}
@@ -1668,7 +1668,7 @@ func (c *Client) PoolMarketListPagingQuery(ctx context.Context, startPage, total
 	g := PagingGetter[[]PoolMarket]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/market/list",
-		Params:  createParams(optParams),
+		Params:  CreateParams(optParams),
 		Headers: c.headers,
 		Limiter: c.limiter,
 		GetterOption: &GetterOption{

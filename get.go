@@ -24,7 +24,7 @@ var (
 	Err500 = fmt.Errorf("solscan: 500 internal server error")
 )
 
-func createParams[Opt any](optParams *Opt, requiredParams ...string) url.Values {
+func CreateParams[Opt any](optParams *Opt, requiredParams ...string) url.Values {
 	if optParams == nil {
 		optParams = new(Opt)
 	}
