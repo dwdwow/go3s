@@ -23,8 +23,8 @@ const (
 )
 
 var (
-	V2Limiter = rate.NewLimiter(rate.Every(time.Minute), V2_MAX_REQUESTS_PER_MINUTE)
-	V3Limiter = rate.NewLimiter(rate.Every(time.Minute), V3_MAX_REQUESTS_PER_MINUTE)
+	V2Limiter = rate.NewLimiter(rate.Every(time.Minute), V2_MAX_REQUESTS_PER_MINUTE / 2)
+	V3Limiter = rate.NewLimiter(rate.Every(time.Minute), V3_MAX_REQUESTS_PER_MINUTE / 2)
 )
 
 type RespData[D any] struct {
