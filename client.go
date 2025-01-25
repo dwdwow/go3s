@@ -771,8 +771,8 @@ type NFTCollectionItem struct {
 }
 
 type Client struct {
-	limiter *rate.Limiter
-	headers map[string][]string
+	Limiter *rate.Limiter
+	Headers map[string][]string
 }
 
 func NewClient(auth_token string, limiter *rate.Limiter) *Client {
@@ -783,8 +783,8 @@ func NewClient(auth_token string, limiter *rate.Limiter) *Client {
 		limiter = V2Limiter
 	}
 	return &Client{
-		limiter: limiter,
-		headers: map[string][]string{
+		Limiter: limiter,
+		Headers: map[string][]string{
 			"content-type": {"application/json"},
 			"token":        {auth_token},
 		},
@@ -803,8 +803,8 @@ func (c *Client) ChainInfo(ctx context.Context) (ChainInfo, error) {
 	sg := SimpleGetter[ChainInfo]{
 		BaseURL: PUBLIC_BASE_URL,
 		Path:    "chaininfo",
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -831,8 +831,8 @@ func (c *Client) AccountTransfers(ctx context.Context, address string, optParams
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/transfer",
 		Params:  params,
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -843,8 +843,8 @@ func (c *Client) AccountTransfersPagingQuery(ctx context.Context, startPage, tot
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/transfer",
 		Params:  params,
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -873,8 +873,8 @@ func (c *Client) AccountTokenAccounts(ctx context.Context, address string, optPa
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/token-accounts",
 		Params:  params,
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -885,8 +885,8 @@ func (c *Client) AccountTokenAccountsPagingQuery(ctx context.Context, startPage,
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/token-accounts",
 		Params:  params,
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -921,8 +921,8 @@ func (c *Client) AccountDefiActivities(ctx context.Context, address string, optP
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/defi/activities",
 		Params:  params,
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -933,8 +933,8 @@ func (c *Client) AccountDefiActivitiesPagingQuery(ctx context.Context, startPage
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/defi/activities",
 		Params:  params,
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -967,8 +967,8 @@ func (c *Client) AccountBalanceChanges(ctx context.Context, address string, optP
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/balance_change",
 		Params:  CreateParams(optParams, "address", address),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -978,8 +978,8 @@ func (c *Client) AccountBalanceChangesPagingQuery(ctx context.Context, startPage
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/balance_change",
 		Params:  CreateParams(optParams, "address", address),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -1005,8 +1005,8 @@ func (c *Client) AccountTransactions(ctx context.Context, address string, optPar
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/transactions",
 		Params:  CreateParams(optParams, "address", address),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1020,8 +1020,8 @@ func (c *Client) AccountTransactionsPagingQuery(ctx context.Context, totalSize i
 	g := PagingGetter[[]Transaction]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/transactions",
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	pageNum := int(math.Ceil(float64(totalSize) / float64(SmallPageSize40)))
 	for i := 0; i < pageNum; i++ {
@@ -1050,8 +1050,8 @@ func (c *Client) AccountStakes(ctx context.Context, address string, optParams *A
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/stake",
 		Params:  CreateParams(optParams, "address", address),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1060,8 +1060,8 @@ func (c *Client) AccountStakesPagingQuery(ctx context.Context, startPage, totalS
 	g := PagingGetter[[]AccountStake]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/stake",
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		Params:  CreateParams(optParams, "address", address),
 		PagingParams: &PagingParams[[]AccountStake]{
 			StartPage:         startPage,
@@ -1079,8 +1079,8 @@ func (c *Client) AccountDetail(ctx context.Context, address string) (AccountDeta
 		BaseURL: PRO_BASE_URL,
 		Path:    "/account/detail",
 		Params:  url.Values{"address": {address}},
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1090,8 +1090,8 @@ func (c *Client) AccountRewardsExport(ctx context.Context, address string, timeF
 		BaseURL:           PRO_BASE_URL,
 		Path:              "/account/reward/export",
 		Params:            url.Values{"address": {address}, "time_from": {strconv.FormatInt(timeFrom, 10)}, "time_to": {strconv.FormatInt(timeTo, 10)}},
-		Headers:           c.headers,
-		Limiter:           c.limiter,
+		Headers:           c.Headers,
+		Limiter:           c.Limiter,
 		RespBodyUnmarshal: ExportBodyUnmarshal,
 	}
 	return sg.Do(ctx)
@@ -1115,8 +1115,8 @@ func (c *Client) AccountTransfersExport(ctx context.Context, address string, opt
 		BaseURL:           PRO_BASE_URL,
 		Path:              "/account/transfer/export",
 		Params:            CreateParams(optParams, "address", address),
-		Headers:           c.headers,
-		Limiter:           c.limiter,
+		Headers:           c.Headers,
+		Limiter:           c.Limiter,
 		RespBodyUnmarshal: ExportBodyUnmarshal,
 	}
 	return sg.Do(ctx)
@@ -1140,8 +1140,8 @@ func (c *Client) TokenTransfers(ctx context.Context, address string, optParams *
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/transfer",
 		Params:  CreateParams(optParams, "address", address),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1151,8 +1151,8 @@ func (c *Client) TokenTransfersPagingQuery(ctx context.Context, startPage, total
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/transfer",
 		Params:  CreateParams(optParams, "address", address),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -1186,8 +1186,8 @@ func (c *Client) TokenDefiActivities(ctx context.Context, address string, optPar
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/defi/activities",
 		Params:  CreateParams(optParams, "address", address),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1197,8 +1197,8 @@ func (c *Client) TokenDefiActivitiesPagingQuery(ctx context.Context, startPage, 
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/defi/activities",
 		Params:  CreateParams(optParams, "address", address),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -1226,8 +1226,8 @@ func (c *Client) TokenMarkets(ctx context.Context, token_pair []string, optParam
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/markets",
 		Params:  CreateParams(optParams, "token[]", token_pair[0], "token[]", token_pair[1]),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1237,8 +1237,8 @@ func (c *Client) TokenMarketsPagingQuery(ctx context.Context, startPage, totalSi
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/markets",
 		Params:  CreateParams(optParams, "token[]", token_pair[0], "token[]", token_pair[1]),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -1266,8 +1266,8 @@ func (c *Client) TokenList(ctx context.Context, optParams *TokenListParams) ([]T
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/list",
 		Params:  CreateParams(optParams),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1277,8 +1277,8 @@ func (c *Client) TokenListPagingQuery(ctx context.Context, startPage, totalSize,
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/list",
 		Params:  CreateParams(optParams),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -1299,8 +1299,8 @@ func (c *Client) TokenTrending(ctx context.Context, limit int64) ([]Token, error
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/trending",
 		Params:  url.Values{"limit": {strconv.FormatInt(limit, 10)}},
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return g.Do(ctx)
 }
@@ -1314,8 +1314,8 @@ func (c *Client) TokenPrice(ctx context.Context, address, startTime, endTime str
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/price",
 		Params:  params,
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1332,8 +1332,8 @@ func (c *Client) TokenHolders(ctx context.Context, address string, optParams *To
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/holders",
 		Params:  CreateParams(optParams, "address", address),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1343,8 +1343,8 @@ func (c *Client) TokenHoldersPagingQuery(ctx context.Context, startPage, totalSi
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/holders",
 		Params:  CreateParams(optParams, "address", address),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -1365,8 +1365,8 @@ func (c *Client) TokenMeta(ctx context.Context, address string) (TokenMeta, erro
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/meta",
 		Params:  url.Values{"address": {address}},
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1375,8 +1375,8 @@ func (c *Client) TokenTop(ctx context.Context) ([]TokenTop, error) {
 	sg := SimpleGetter[[]TokenTop]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/token/top",
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1392,8 +1392,8 @@ func (c *Client) NFTNews(ctx context.Context, optParams *NFTNewsParams) (RespDat
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/news",
 		Params:  CreateParams(optParams),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1403,8 +1403,8 @@ func (c *Client) NFTNewsPagingQuery(ctx context.Context, startPage, totalSize, m
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/news",
 		Params:  CreateParams(optParams),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -1439,8 +1439,8 @@ func (c *Client) NFTActivities(ctx context.Context, optParams *NFTActivitiesPara
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/activities",
 		Params:  CreateParams(optParams),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1450,8 +1450,8 @@ func (c *Client) NFTActivitiesPagingQuery(ctx context.Context, startPage, totalS
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/activities",
 		Params:  CreateParams(optParams),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -1480,8 +1480,8 @@ func (c *Client) NFTCollectionList(ctx context.Context, optParams *NFTCollection
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/collection/lists",
 		Params:  CreateParams(optParams),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1491,8 +1491,8 @@ func (c *Client) NFTCollectionListPagingQuery(ctx context.Context, startPage, to
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/collection/lists",
 		Params:  CreateParams(optParams),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -1519,8 +1519,8 @@ func (c *Client) NFTCollectionItems(ctx context.Context, collection string, optP
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/collection/items",
 		Params:  CreateParams(optParams, "collection", collection),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1530,8 +1530,8 @@ func (c *Client) NFTCollectionItemsPagingQuery(ctx context.Context, startPage, t
 		BaseURL: PRO_BASE_URL,
 		Path:    "/nft/collection/items",
 		Params:  CreateParams(optParams, "collection", collection),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -1557,8 +1557,8 @@ func (c *Client) TxLast(ctx context.Context, optParams *TxLastParams) ([]Transac
 		BaseURL: PRO_BASE_URL,
 		Path:    "/transaction/last",
 		Params:  CreateParams(optParams),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1568,8 +1568,8 @@ func (c *Client) TxDetail(ctx context.Context, tx string) (TransactionDetail, er
 		BaseURL: PRO_BASE_URL,
 		Path:    "/transaction/detail",
 		Params:  url.Values{"tx": {tx}},
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1579,8 +1579,8 @@ func (c *Client) TxActions(ctx context.Context, tx string) (TransactionAction, e
 		BaseURL: PRO_BASE_URL,
 		Path:    "/transaction/actions",
 		Params:  url.Values{"tx": {tx}},
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1590,8 +1590,8 @@ func (c *Client) BlocksLast(ctx context.Context, limit LargePageSize) ([]BlockDe
 		BaseURL: PRO_BASE_URL,
 		Path:    "/block/last",
 		Params:  url.Values{"limit": {strconv.FormatInt(int64(limit), 10)}},
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1606,8 +1606,8 @@ func (c *Client) BlockTransactions(ctx context.Context, block int64, optParams *
 		BaseURL: PRO_BASE_URL,
 		Path:    "/block/transactions",
 		Params:  CreateParams(optParams, "block", strconv.FormatInt(block, 10)),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1617,8 +1617,8 @@ func (c *Client) BlockTransactionsPagingQuery(ctx context.Context, startPage, to
 		BaseURL: PRO_BASE_URL,
 		Path:    "/block/transactions",
 		Params:  CreateParams(optParams, "block", strconv.FormatInt(block, 10)),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -1639,8 +1639,8 @@ func (c *Client) BlockDetail(ctx context.Context, block int64) (BlockDetail, err
 		BaseURL: PRO_BASE_URL,
 		Path:    "/block/detail",
 		Params:  url.Values{"block": {strconv.FormatInt(block, 10)}},
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1658,8 +1658,8 @@ func (c *Client) PoolMarketList(ctx context.Context, optParams *PoolMarketListPa
 		BaseURL: PRO_BASE_URL,
 		Path:    "/market/list",
 		Params:  CreateParams(optParams),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1669,8 +1669,8 @@ func (c *Client) PoolMarketListPagingQuery(ctx context.Context, startPage, total
 		BaseURL: PRO_BASE_URL,
 		Path:    "/market/list",
 		Params:  CreateParams(optParams),
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 		GetterOption: &GetterOption{
 			RetryInterval: time.Second,
 			MaxRetries:    100,
@@ -1691,8 +1691,8 @@ func (c *Client) PoolMarketInfo(ctx context.Context, address string) (PoolMarket
 		BaseURL: PRO_BASE_URL,
 		Path:    "/market/info",
 		Params:  url.Values{"address": {address}},
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1706,8 +1706,8 @@ func (c *Client) PoolMarketVolume(ctx context.Context, address string, startTime
 		BaseURL: PRO_BASE_URL,
 		Path:    "/market/volume",
 		Params:  params,
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
@@ -1716,8 +1716,8 @@ func (c *Client) APIUsage(ctx context.Context) (APIUsage, error) {
 	sg := SimpleGetter[APIUsage]{
 		BaseURL: PRO_BASE_URL,
 		Path:    "/monitor/usage",
-		Headers: c.headers,
-		Limiter: c.limiter,
+		Headers: c.Headers,
+		Limiter: c.Limiter,
 	}
 	return sg.Do(ctx)
 }
