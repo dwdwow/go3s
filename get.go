@@ -316,7 +316,7 @@ func (g *CcrtGetter[D]) Do(ctx context.Context) (D, error) {
 		if end > l {
 			end = l
 		}
-		logger.Info("solscan: concurrency", "start", i, "end", end, "url", g.Getters[i].URL())
+		logger.Info("solscan: concurrency", "start", i, "end", end, "total", l, "url", g.Getters[i].URL())
 		group := g.Getters[i:end]
 		eg, ctx := errgroup.WithContext(ctx)
 		for j, simpleGetter := range group {
