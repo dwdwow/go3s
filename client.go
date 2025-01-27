@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"math/big"
 	"net/url"
 	"os"
 	"strconv"
@@ -130,7 +131,7 @@ type Transfer struct {
 	ToAddress     string       `json:"to_address" bson:"to_address"`
 	TokenAddress  string       `json:"token_address" bson:"token_address"`
 	TokenDecimals int64        `json:"token_decimals" bson:"token_decimals"`
-	Amount        int64        `json:"amount" bson:"amount"`
+	Amount        big.Int      `json:"amount" bson:"amount"`
 	Flow          Flow         `json:"flow" bson:"flow"`
 }
 

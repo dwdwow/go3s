@@ -19,8 +19,10 @@ func TestAccountTransfers(t *testing.T) {
 	client := NewV2Client("")
 	transfers, err := client.AccountTransfers(
 		context.Background(),
-		"3zAQJcPLbfi2mwnPraQpfuNFh5h5PN7XLkNDJSZ5i7E5",
-		nil,
+		"9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+		&AccountTransfersParams{
+			Page: 97,
+		},
 	)
 	if err != nil {
 		t.Fatal(err)
