@@ -1103,11 +1103,10 @@ type AccountTransfersExportParams struct {
 	FromAddress       string              `json:"from_address,omitempty"`
 	ToAddress         string              `json:"to_address,omitempty"`
 	Token             string              `json:"token,omitempty"`
-	AmountMin         int64               `json:"amount_min,omitempty"`
-	AmountMax         int64               `json:"amount_max,omitempty"`
-	BlockTimeMin      int64               `json:"block_time_min,omitempty"`
-	BlockTimeMax      int64               `json:"block_time_max,omitempty"`
+	AmountRange       []float64           `json:"amount,omitempty"`
+	BlockTimeRange    []int64             `json:"block_time,omitempty"`
 	ExcludeAmountZero bool                `json:"exclude_amount_zero,omitempty"`
+	Flow              Flow                `json:"flow,omitempty"`
 }
 
 func (c *Client) AccountTransfersExport(ctx context.Context, address string, optParams *AccountTransfersExportParams) ([]byte, error) {
