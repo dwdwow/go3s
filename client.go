@@ -121,17 +121,17 @@ const (
 )
 
 type Transfer struct {
-	BlockID       int64        `json:"block_id"`
-	TransID       string       `json:"trans_id"`
-	BlockTime     int64        `json:"block_time"`
-	Time          string       `json:"time"`
-	ActivityType  ActivityType `json:"activity_type"`
-	FromAddress   string       `json:"from_address"`
-	ToAddress     string       `json:"to_address"`
-	TokenAddress  string       `json:"token_address"`
-	TokenDecimals int64        `json:"token_decimals"`
-	Amount        int64        `json:"amount"`
-	Flow          Flow         `json:"flow"`
+	BlockID       int64        `json:"block_id" bson:"block_id"`
+	TransID       string       `json:"trans_id" bson:"trans_id"`
+	BlockTime     int64        `json:"block_time" bson:"block_time"`
+	Time          string       `json:"time" bson:"time"`
+	ActivityType  ActivityType `json:"activity_type" bson:"activity_type"`
+	FromAddress   string       `json:"from_address" bson:"from_address"`
+	ToAddress     string       `json:"to_address" bson:"to_address"`
+	TokenAddress  string       `json:"token_address" bson:"token_address"`
+	TokenDecimals int64        `json:"token_decimals" bson:"token_decimals"`
+	Amount        int64        `json:"amount" bson:"amount"`
+	Flow          Flow         `json:"flow" bson:"flow"`
 }
 
 type NFTCollectionSortBy string
@@ -253,521 +253,521 @@ const (
 )
 
 type TokenAccount struct {
-	TokenAccount  string `json:"token_account"`
-	TokenAddress  string `json:"token_address"`
-	Amount        int64  `json:"amount"`
-	TokenDecimals int64  `json:"token_decimals"`
-	Owner         string `json:"owner"`
+	TokenAccount  string `json:"token_account" bson:"token_account"`
+	TokenAddress  string `json:"token_address" bson:"token_address"`
+	Amount        int64  `json:"amount" bson:"amount"`
+	TokenDecimals int64  `json:"token_decimals" bson:"token_decimals"`
+	Owner         string `json:"owner" bson:"owner"`
 }
 
 type ChildRouter struct {
-	Token1         string `json:"token1"`
-	Token1Decimals int64  `json:"token1_decimals"`
-	Amount1        int64  `json:"amount1,string"`
-	Token2         string `json:"token2"`
-	Token2Decimals int64  `json:"token2_decimals"`
-	Amount2        int64  `json:"amount2,string"`
+	Token1         string `json:"token1" bson:"token1"`
+	Token1Decimals int64  `json:"token1_decimals" bson:"token1_decimals"`
+	Amount1        int64  `json:"amount1" bson:"amount1"`
+	Token2         string `json:"token2" bson:"token2"`
+	Token2Decimals int64  `json:"token2_decimals" bson:"token2_decimals"`
+	Amount2        int64  `json:"amount2" bson:"amount2"`
 }
 
 type Router struct {
-	Token1         string        `json:"token1"`
-	Token1Decimals int64         `json:"token1_decimals"`
-	Amount1        int64         `json:"amount1"`
-	Token2         string        `json:"token2"`
-	Token2Decimals int64         `json:"token2_decimals"`
-	Amount2        int64         `json:"amount2"`
-	ChildRouters   []ChildRouter `json:"child_routers"`
+	Token1         string        `json:"token1" bson:"token1"`
+	Token1Decimals int64         `json:"token1_decimals" bson:"token1_decimals"`
+	Amount1        int64         `json:"amount1" bson:"amount1"`
+	Token2         string        `json:"token2" bson:"token2"`
+	Token2Decimals int64         `json:"token2_decimals" bson:"token2_decimals"`
+	Amount2        int64         `json:"amount2" bson:"amount2"`
+	ChildRouters   []ChildRouter `json:"child_routers" bson:"child_routers"`
 }
 
 type AmountInfo struct {
-	Token1         string   `json:"token1"`
-	Token1Decimals int64    `json:"token1_decimals"`
-	Amount1        int64    `json:"amount1"`
-	Token2         string   `json:"token2"`
-	Token2Decimals int64    `json:"token2_decimals"`
-	Amount2        int64    `json:"amount2"`
-	Routers        []Router `json:"routers"`
+	Token1         string   `json:"token1" bson:"token1"`
+	Token1Decimals int64    `json:"token1_decimals" bson:"token1_decimals"`
+	Amount1        int64    `json:"amount1" bson:"amount1"`
+	Token2         string   `json:"token2" bson:"token2"`
+	Token2Decimals int64    `json:"token2_decimals" bson:"token2_decimals"`
+	Amount2        int64    `json:"amount2" bson:"amount2"`
+	Routers        []Router `json:"routers" bson:"routers"`
 }
 
 type DefiActivity struct {
-	BlockID      int64        `json:"block_id"`
-	TransID      string       `json:"trans_id"`
-	BlockTime    int64        `json:"block_time"`
-	Time         string       `json:"time"`
-	ActivityType ActivityType `json:"activity_type"`
-	FromAddress  string       `json:"from_address"`
-	ToAddress    string       `json:"to_address"`
-	Sources      []string     `json:"sources"`
-	Platform     []string     `json:"platform"`
-	Routers      Router       `json:"routers"`
+	BlockID      int64        `json:"block_id" bson:"block_id"`
+	TransID      string       `json:"trans_id" bson:"trans_id"`
+	BlockTime    int64        `json:"block_time" bson:"block_time"`
+	Time         string       `json:"time" bson:"time"`
+	ActivityType ActivityType `json:"activity_type" bson:"activity_type"`
+	FromAddress  string       `json:"from_address" bson:"from_address"`
+	ToAddress    string       `json:"to_address" bson:"to_address"`
+	Sources      []string     `json:"sources" bson:"sources"`
+	Platform     []string     `json:"platform" bson:"platform"`
+	Routers      Router       `json:"routers" bson:"routers"`
 }
 
 type AccountChangeActivity struct {
-	BlockID       int64             `json:"block_id"`
-	BlockTime     int64             `json:"block_time"`
-	Time          string            `json:"time"`
-	TransID       string            `json:"trans_id"`
-	Address       string            `json:"address"`
-	TokenAddress  string            `json:"token_address"`
-	TokenAccount  string            `json:"token_account"`
-	TokenDecimals int64             `json:"token_decimals"`
-	Amount        int64             `json:"amount"`
-	PreBalance    int64             `json:"pre_balance"`
-	PostBalance   int64             `json:"post_balance"`
-	ChangeType    BalanceChangeType `json:"change_type"`
-	Fee           int64             `json:"fee"`
+	BlockID       int64             `json:"block_id" bson:"block_id"`
+	BlockTime     int64             `json:"block_time" bson:"block_time"`
+	Time          string            `json:"time" bson:"time"`
+	TransID       string            `json:"trans_id" bson:"trans_id"`
+	Address       string            `json:"address" bson:"address"`
+	TokenAddress  string            `json:"token_address" bson:"token_address"`
+	TokenAccount  string            `json:"token_account" bson:"token_account"`
+	TokenDecimals int64             `json:"token_decimals" bson:"token_decimals"`
+	Amount        int64             `json:"amount" bson:"amount"`
+	PreBalance    int64             `json:"pre_balance" bson:"pre_balance"`
+	PostBalance   int64             `json:"post_balance" bson:"post_balance"`
+	ChangeType    BalanceChangeType `json:"change_type" bson:"change_type"`
+	Fee           int64             `json:"fee" bson:"fee"`
 }
 
 type ParsedCancelAllAndPlaceOrders struct {
-	Type      string `json:"type"`
-	Program   string `json:"program"`
-	ProgramID string `json:"program_id"`
+	Type      string `json:"type" bson:"type"`
+	Program   string `json:"program" bson:"program"`
+	ProgramID string `json:"program_id" bson:"program_id"`
 }
 
 type Transaction struct {
-	Slot               int64                           `json:"slot"`
-	Fee                int64                           `json:"fee"`
-	Status             TxStatus                        `json:"status"`
-	Signer             []string                        `json:"signer"`
-	BlockTime          int64                           `json:"block_time"`
-	TxHash             string                          `json:"tx_hash"`
-	ParsedInstructions []ParsedCancelAllAndPlaceOrders `json:"parsed_instructions"`
-	ProgramIDs         []string                        `json:"program_ids"`
-	Time               string                          `json:"time"`
+	Slot               int64                           `json:"slot" bson:"slot"`
+	Fee                int64                           `json:"fee" bson:"fee"`
+	Status             TxStatus                        `json:"status" bson:"status"`
+	Signer             []string                        `json:"signer" bson:"signer"`
+	BlockTime          int64                           `json:"block_time" bson:"block_time"`
+	TxHash             string                          `json:"tx_hash" bson:"tx_hash"`
+	ParsedInstructions []ParsedCancelAllAndPlaceOrders `json:"parsed_instructions" bson:"parsed_instructions"`
+	ProgramIDs         []string                        `json:"program_ids" bson:"program_ids"`
+	Time               string                          `json:"time" bson:"time"`
 }
 
 type AccountStake struct {
-	Amount               int64              `json:"amount"`
-	Role                 []StakeRole        `json:"role"`
-	Status               StakeAccountStatus `json:"status"`
-	Type                 StakeAccountType   `json:"type"`
-	Voter                string             `json:"voter"`
-	ActiveStakeAmount    int64              `json:"active_stake_amount"`
-	DelegatedStakeAmount int64              `json:"delegated_stake_amount"`
-	SolBalance           int                `json:"sol_balance"`
-	TotalReward          string             `json:"total_reward"`
-	StakeAccount         string             `json:"stake_account"`
-	ActivationEpoch      int64              `json:"activation_epoch"`
-	StakeType            int64              `json:"stake_type"`
+	Amount               int64              `json:"amount" bson:"amount"`
+	Role                 []StakeRole        `json:"role" bson:"role"`
+	Status               StakeAccountStatus `json:"status" bson:"status"`
+	Type                 StakeAccountType   `json:"type" bson:"type"`
+	Voter                string             `json:"voter" bson:"voter"`
+	ActiveStakeAmount    int64              `json:"active_stake_amount" bson:"active_stake_amount"`
+	DelegatedStakeAmount int64              `json:"delegated_stake_amount" bson:"delegated_stake_amount"`
+	SolBalance           int                `json:"sol_balance" bson:"sol_balance"`
+	TotalReward          string             `json:"total_reward" bson:"total_reward"`
+	StakeAccount         string             `json:"stake_account" bson:"stake_account"`
+	ActivationEpoch      int64              `json:"activation_epoch" bson:"activation_epoch"`
+	StakeType            int64              `json:"stake_type" bson:"stake_type"`
 }
 
 type AccountDetail struct {
-	Account      string      `json:"account"`
-	Lamports     int64       `json:"lamports"`
-	Type         AccountType `json:"type"`
-	Executable   bool        `json:"executable"`
-	OwnerProgram string      `json:"owner_program"`
+	Account      string      `json:"account" bson:"account"`
+	Lamports     int64       `json:"lamports" bson:"lamports"`
+	Type         AccountType `json:"type" bson:"type"`
+	Executable   bool        `json:"executable" bson:"executable"`
+	OwnerProgram string      `json:"owner_program" bson:"owner_program"`
 	// RentEpoch is too large, so we don't need it.
 	// RentEpoch    int64       `json:"rent_epoch"`
-	IsOncurve bool `json:"is_oncurve"`
+	IsOncurve bool `json:"is_oncurve" bson:"is_oncurve"`
 }
 
 type Market struct {
-	PoolID             string  `json:"pool_id"`
-	ProgramID          string  `json:"program_id"`
-	Token1             string  `json:"token_1"`
-	Token2             string  `json:"token_2"`
-	TokenAccount1      string  `json:"token_account_1"`
-	TokenAccount2      string  `json:"token_account_2"`
-	TotalTrades24h     int64   `json:"total_trades_24h"`
-	TotalTradesPrev24h int64   `json:"total_trades_prev_24h"`
-	TotalVolume24h     float64 `json:"total_volume_24h"`
-	TotalVolumePrev24h float64 `json:"total_volume_prev_24h"`
+	PoolID             string  `json:"pool_id" bson:"pool_id"`
+	ProgramID          string  `json:"program_id" bson:"program_id"`
+	Token1             string  `json:"token_1" bson:"token_1"`
+	Token2             string  `json:"token_2" bson:"token_2"`
+	TokenAccount1      string  `json:"token_account_1" bson:"token_account_1"`
+	TokenAccount2      string  `json:"token_account_2" bson:"token_account_2"`
+	TotalTrades24h     int64   `json:"total_trades_24h" bson:"total_trades_24h"`
+	TotalTradesPrev24h int64   `json:"total_trades_prev_24h" bson:"total_trades_prev_24h"`
+	TotalVolume24h     float64 `json:"total_volume_24h" bson:"total_volume_24h"`
+	TotalVolumePrev24h float64 `json:"total_volume_prev_24h" bson:"total_volume_prev_24h"`
 }
 
 type Token struct {
-	Address        string  `json:"address"`
-	Decimals       int64   `json:"decimals"`
-	Name           string  `json:"name"`
-	Symbol         string  `json:"symbol"`
-	MarketCap      float64 `json:"market_cap"`
-	Price          float64 `json:"price"`
-	Price24hChange float64 `json:"price_24h_change"`
-	CreatedTime    int64   `json:"created_time"`
+	Address        string  `json:"address" bson:"address"`
+	Decimals       int64   `json:"decimals" bson:"decimals"`
+	Name           string  `json:"name" bson:"name"`
+	Symbol         string  `json:"symbol" bson:"symbol"`
+	MarketCap      float64 `json:"market_cap" bson:"market_cap"`
+	Price          float64 `json:"price" bson:"price"`
+	Price24hChange float64 `json:"price_24h_change" bson:"price_24h_change"`
+	CreatedTime    int64   `json:"created_time" bson:"created_time"`
 }
 
 type TokenPrice struct {
-	Date  int64   `json:"date"` // yyyymmdd format
-	Price float64 `json:"price"`
+	Date  int64   `json:"date" bson:"date"` // yyyymmdd format
+	Price float64 `json:"price" bson:"price"`
 }
 
 type TokenHolder struct {
-	Address  string `json:"address"`
-	Amount   int64  `json:"amount"`
-	Decimals int64  `json:"decimals"`
-	Owner    string `json:"owner"`
-	Rank     int64  `json:"rank"`
+	Address  string `json:"address" bson:"address"`
+	Amount   int64  `json:"amount" bson:"amount"`
+	Decimals int64  `json:"decimals" bson:"decimals"`
+	Owner    string `json:"owner" bson:"owner"`
+	Rank     int64  `json:"rank" bson:"rank"`
 }
 
 type TokenMeta struct {
-	Supply         string  `json:"supply"`
-	Address        string  `json:"address"`
-	Name           string  `json:"name"`
-	Symbol         string  `json:"symbol"`
-	Icon           string  `json:"icon"`
-	Decimals       int64   `json:"decimals"`
-	Holder         int64   `json:"holder"`
-	Creator        string  `json:"creator"`
-	CreateTx       string  `json:"create_tx"`
-	CreatedTime    int64   `json:"created_time"`
-	FirstMintTx    string  `json:"first_mint_tx"`
-	FirstMintTime  int64   `json:"first_mint_time"`
-	Price          float64 `json:"price"`
-	Volume24h      float64 `json:"volume_24h"`
-	MarketCap      float64 `json:"market_cap"`
-	MarketCapRank  int64   `json:"market_cap_rank"`
-	PriceChange24h float64 `json:"price_change_24h"`
+	Supply         string  `json:"supply" bson:"supply"`
+	Address        string  `json:"address" bson:"address"`
+	Name           string  `json:"name" bson:"name"`
+	Symbol         string  `json:"symbol" bson:"symbol"`
+	Icon           string  `json:"icon" bson:"icon"`
+	Decimals       int64   `json:"decimals" bson:"decimals"`
+	Holder         int64   `json:"holder" bson:"holder"`
+	Creator        string  `json:"creator" bson:"creator"`
+	CreateTx       string  `json:"create_tx" bson:"create_tx"`
+	CreatedTime    int64   `json:"created_time" bson:"created_time"`
+	FirstMintTx    string  `json:"first_mint_tx" bson:"first_mint_tx"`
+	FirstMintTime  int64   `json:"first_mint_time" bson:"first_mint_time"`
+	Price          float64 `json:"price" bson:"price"`
+	Volume24h      float64 `json:"volume_24h" bson:"volume_24h"`
+	MarketCap      float64 `json:"market_cap" bson:"market_cap"`
+	MarketCapRank  int64   `json:"market_cap_rank" bson:"market_cap_rank"`
+	PriceChange24h float64 `json:"price_change_24h" bson:"price_change_24h"`
 }
 
 type TokenTop struct {
-	Address        string  `json:"address"`
-	Decimals       int64   `json:"decimals"`
-	Name           string  `json:"name"`
-	Symbol         string  `json:"symbol"`
-	MarketCap      float64 `json:"market_cap"`
-	Price          float64 `json:"price"`
-	Price24hChange float64 `json:"price_24h_change"`
-	CreatedTime    int64   `json:"created_time"`
+	Address        string  `json:"address" bson:"address"`
+	Decimals       int64   `json:"decimals" bson:"decimals"`
+	Name           string  `json:"name" bson:"name"`
+	Symbol         string  `json:"symbol" bson:"symbol"`
+	MarketCap      float64 `json:"market_cap" bson:"market_cap"`
+	Price          float64 `json:"price" bson:"price"`
+	Price24hChange float64 `json:"price_24h_change" bson:"price_24h_change"`
+	CreatedTime    int64   `json:"created_time" bson:"created_time"`
 }
 
 type AccountKey struct {
-	Pubkey   string `json:"pubkey"`
-	Signer   bool   `json:"signer"`
-	Source   string `json:"source"`
-	Writable bool   `json:"writable"`
+	Pubkey   string `json:"pubkey" bson:"pubkey"`
+	Signer   bool   `json:"signer" bson:"signer"`
+	Source   string `json:"source" bson:"source"`
+	Writable bool   `json:"writable" bson:"writable"`
 }
 
 type TransferInfo struct {
-	SourceOwner      string                 `json:"source_owner"`
-	Source           string                 `json:"source"`
-	Destination      string                 `json:"destination"`
-	DestinationOwner string                 `json:"destination_owner"`
-	TransferType     string                 `json:"transfer_type"`
-	TokenAddress     string                 `json:"token_address"`
-	Decimals         int64                  `json:"decimals"`
-	AmountStr        string                 `json:"amount_str"`
-	Amount           int64                  `json:"amount"`
-	ProgramID        string                 `json:"program_id"`
-	OuterProgramID   string                 `json:"outer_program_id"`
-	InsIndex         int64                  `json:"ins_index"`
-	OuterInsIndex    int64                  `json:"outer_ins_index"`
-	Event            string                 `json:"event"`
-	Fee              map[string]interface{} `json:"fee"`
+	SourceOwner      string                 `json:"source_owner" bson:"source_owner"`
+	Source           string                 `json:"source" bson:"source"`
+	Destination      string                 `json:"destination" bson:"destination"`
+	DestinationOwner string                 `json:"destination_owner" bson:"destination_owner"`
+	TransferType     string                 `json:"transfer_type" bson:"transfer_type"`
+	TokenAddress     string                 `json:"token_address" bson:"token_address"`
+	Decimals         int64                  `json:"decimals" bson:"decimals"`
+	AmountStr        string                 `json:"amount_str" bson:"amount_str"`
+	Amount           int64                  `json:"amount" bson:"amount"`
+	ProgramID        string                 `json:"program_id" bson:"program_id"`
+	OuterProgramID   string                 `json:"outer_program_id" bson:"outer_program_id"`
+	InsIndex         int64                  `json:"ins_index" bson:"ins_index"`
+	OuterInsIndex    int64                  `json:"outer_ins_index" bson:"outer_ins_index"`
+	Event            string                 `json:"event" bson:"event"`
+	Fee              map[string]interface{} `json:"fee" bson:"fee"`
 }
 
 type InstructionData struct {
-	InsIndex           int64                    `json:"ins_index"`
-	ParsedType         string                   `json:"parsed_type"`
-	Type               string                   `json:"type"`
-	ProgramID          string                   `json:"program_id"`
-	Program            string                   `json:"program"`
-	OuterProgramID     *string                  `json:"outer_program_id,omitempty"`
-	OuterInsIndex      int64                    `json:"outer_ins_index"`
-	DataRaw            interface{}              `json:"data_raw"` // can be string or map
-	Accounts           []string                 `json:"accounts"`
-	Activities         []map[string]interface{} `json:"activities"`
-	Transfers          []TransferInfo           `json:"transfers"`
-	ProgramInvokeLevel int64                    `json:"program_invoke_level"`
+	InsIndex           int64                    `json:"ins_index" bson:"ins_index"`
+	ParsedType         string                   `json:"parsed_type" bson:"parsed_type"`
+	Type               string                   `json:"type" bson:"type"`
+	ProgramID          string                   `json:"program_id" bson:"program_id"`
+	Program            string                   `json:"program" bson:"program"`
+	OuterProgramID     *string                  `json:"outer_program_id,omitempty" bson:"outer_program_id,omitempty"`
+	OuterInsIndex      int64                    `json:"outer_ins_index" bson:"outer_ins_index"`
+	DataRaw            interface{}              `json:"data_raw" bson:"data_raw"` // can be string or map
+	Accounts           []string                 `json:"accounts" bson:"accounts"`
+	Activities         []map[string]interface{} `json:"activities" bson:"activities"`
+	Transfers          []TransferInfo           `json:"transfers" bson:"transfers"`
+	ProgramInvokeLevel int64                    `json:"program_invoke_level" bson:"program_invoke_level"`
 }
 
 type BalanceChange struct {
-	Address      string `json:"address"`
-	PreBalance   string `json:"pre_balance"`
-	PostBalance  string `json:"post_balance"`
-	ChangeAmount string `json:"change_amount"`
+	Address      string `json:"address" bson:"address"`
+	PreBalance   string `json:"pre_balance" bson:"pre_balance"`
+	PostBalance  string `json:"post_balance" bson:"post_balance"`
+	ChangeAmount string `json:"change_amount" bson:"change_amount"`
 }
 
 type TokenBalanceChange struct {
-	Address      string `json:"address"`
-	ChangeType   string `json:"change_type"`
-	ChangeAmount string `json:"change_amount"`
-	Decimals     int64  `json:"decimals"`
-	PostBalance  string `json:"post_balance"`
+	Address      string `json:"address" bson:"address"`
+	ChangeType   string `json:"change_type" bson:"change_type"`
+	ChangeAmount string `json:"change_amount" bson:"change_amount"`
+	Decimals     int64  `json:"decimals" bson:"decimals"`
+	PostBalance  string `json:"post_balance" bson:"post_balance"`
 	// if prebalance is 0, it is number, otherwise it is string
-	PreBalance   any    `json:"pre_balance"`
-	TokenAddress string `json:"token_address"`
-	Owner        string `json:"owner"`
-	PostOwner    string `json:"post_owner"`
-	PreOwner     string `json:"pre_owner"`
+	PreBalance   any    `json:"pre_balance" bson:"pre_balance"`
+	TokenAddress string `json:"token_address" bson:"token_address"`
+	Owner        string `json:"owner" bson:"owner"`
+	PostOwner    string `json:"post_owner" bson:"post_owner"`
+	PreOwner     string `json:"pre_owner" bson:"pre_owner"`
 }
 
 type TransactionDetail struct {
-	BlockID              int64                `json:"block_id"`
-	Fee                  int64                `json:"fee"`
-	Reward               []interface{}        `json:"reward"`
-	SolBalChange         []BalanceChange      `json:"sol_bal_change"`
-	TokenBalChange       []TokenBalanceChange `json:"token_bal_change"`
-	TokensInvolved       []string             `json:"tokens_involved"`
-	ParsedInstructions   []InstructionData    `json:"parsed_instructions"`
-	ProgramsInvolved     []string             `json:"programs_involved"`
-	Signer               []string             `json:"signer"`
-	Status               int64                `json:"status"`
-	AccountKeys          []AccountKey         `json:"account_keys"`
-	ComputeUnitsConsumed int64                `json:"compute_units_consumed"`
-	Confirmations        *int64               `json:"confirmations,omitempty"`
+	BlockID              int64                `json:"block_id" bson:"block_id"`
+	Fee                  int64                `json:"fee" bson:"fee"`
+	Reward               []interface{}        `json:"reward" bson:"reward"`
+	SolBalChange         []BalanceChange      `json:"sol_bal_change" bson:"sol_bal_change"`
+	TokenBalChange       []TokenBalanceChange `json:"token_bal_change" bson:"token_bal_change"`
+	TokensInvolved       []string             `json:"tokens_involved" bson:"tokens_involved"`
+	ParsedInstructions   []InstructionData    `json:"parsed_instructions" bson:"parsed_instructions"`
+	ProgramsInvolved     []string             `json:"programs_involved" bson:"programs_involved"`
+	Signer               []string             `json:"signer" bson:"signer"`
+	Status               int64                `json:"status" bson:"status"`
+	AccountKeys          []AccountKey         `json:"account_keys" bson:"account_keys"`
+	ComputeUnitsConsumed int64                `json:"compute_units_consumed" bson:"compute_units_consumed"`
+	Confirmations        *int64               `json:"confirmations,omitempty" bson:"confirmations,omitempty"`
 	// if version is 0, it is number, otherwise it is string
-	Version         any      `json:"version"`
-	TxHash          string   `json:"tx_hash"`
-	BlockTime       int64    `json:"block_time"`
-	LogMessage      []string `json:"log_message"`
-	RecentBlockHash string   `json:"recent_block_hash"`
-	TxStatus        string   `json:"tx_status"`
+	Version         any      `json:"version" bson:"version"`
+	TxHash          string   `json:"tx_hash" bson:"tx_hash"`
+	BlockTime       int64    `json:"block_time" bson:"block_time"`
+	LogMessage      []string `json:"log_message" bson:"log_message"`
+	RecentBlockHash string   `json:"recent_block_hash" bson:"recent_block_hash"`
+	TxStatus        string   `json:"tx_status" bson:"tx_status"`
 }
 
 type TxActionData struct {
-	AmmID          string  `json:"amm_id"`
-	AmmAuthority   *string `json:"amm_authority,omitempty"`
-	Account        string  `json:"account"`
-	Token1         string  `json:"token_1"`
-	Token2         string  `json:"token_2"`
-	Amount1        any     `json:"amount_1"`
-	Amount1Str     string  `json:"amount_1_str"`
-	Amount2        any     `json:"amount_2"`
-	Amount2Str     string  `json:"amount_2_str"`
-	TokenDecimal1  int64   `json:"token_decimal_1"`
-	TokenDecimal2  int64   `json:"token_decimal_2"`
-	TokenAccount11 string  `json:"token_account_1_1"`
-	TokenAccount12 string  `json:"token_account_1_2"`
-	TokenAccount21 string  `json:"token_account_2_1"`
-	TokenAccount22 string  `json:"token_account_2_2"`
-	Owner1         string  `json:"owner_1"`
-	Owner2         string  `json:"owner_2"`
+	AmmID          string  `json:"amm_id" bson:"amm_id"`
+	AmmAuthority   *string `json:"amm_authority,omitempty" bson:"amm_authority,omitempty"`
+	Account        string  `json:"account" bson:"account"`
+	Token1         string  `json:"token_1" bson:"token_1"`
+	Token2         string  `json:"token_2" bson:"token_2"`
+	Amount1        any     `json:"amount_1" bson:"amount_1"`
+	Amount1Str     string  `json:"amount_1_str" bson:"amount_1_str"`
+	Amount2        any     `json:"amount_2" bson:"amount_2"`
+	Amount2Str     string  `json:"amount_2_str" bson:"amount_2_str"`
+	TokenDecimal1  int64   `json:"token_decimal_1" bson:"token_decimal_1"`
+	TokenDecimal2  int64   `json:"token_decimal_2" bson:"token_decimal_2"`
+	TokenAccount11 string  `json:"token_account_1_1" bson:"token_account_1_1"`
+	TokenAccount12 string  `json:"token_account_1_2" bson:"token_account_1_2"`
+	TokenAccount21 string  `json:"token_account_2_1" bson:"token_account_2_1"`
+	TokenAccount22 string  `json:"token_account_2_2" bson:"token_account_2_2"`
+	Owner1         string  `json:"owner_1" bson:"owner_1"`
+	Owner2         string  `json:"owner_2" bson:"owner_2"`
 }
 
 type TxAction struct {
-	Name           string       `json:"name"`
-	ActivityType   string       `json:"activity_type"`
-	ProgramID      string       `json:"program_id"`
-	Data           TxActionData `json:"data"`
-	InsIndex       int64        `json:"ins_index"`
-	OuterInsIndex  int64        `json:"outer_ins_index"`
-	OuterProgramID *string      `json:"outer_program_id,omitempty"`
+	Name           string       `json:"name" bson:"name"`
+	ActivityType   string       `json:"activity_type" bson:"activity_type"`
+	ProgramID      string       `json:"program_id" bson:"program_id"`
+	Data           TxActionData `json:"data" bson:"data"`
+	InsIndex       int64        `json:"ins_index" bson:"ins_index"`
+	OuterInsIndex  int64        `json:"outer_ins_index" bson:"outer_ins_index"`
+	OuterProgramID *string      `json:"outer_program_id,omitempty" bson:"outer_program_id,omitempty"`
 }
 
 type TxActionTransfer struct {
-	SourceOwner      string `json:"source_owner"`
-	Source           string `json:"source"`
-	Destination      string `json:"destination"`
-	DestinationOwner string `json:"destination_owner"`
-	TransferType     string `json:"transfer_type"`
-	TokenAddress     string `json:"token_address"`
-	Decimals         int64  `json:"decimals"`
-	AmountStr        string `json:"amount_str"`
-	Amount           int64  `json:"amount"`
-	ProgramID        string `json:"program_id"`
-	OuterProgramID   string `json:"outer_program_id"`
-	InsIndex         int64  `json:"ins_index"`
-	OuterInsIndex    int64  `json:"outer_ins_index"`
+	SourceOwner      string `json:"source_owner" bson:"source_owner"`
+	Source           string `json:"source" bson:"source"`
+	Destination      string `json:"destination" bson:"destination"`
+	DestinationOwner string `json:"destination_owner" bson:"destination_owner"`
+	TransferType     string `json:"transfer_type" bson:"transfer_type"`
+	TokenAddress     string `json:"token_address" bson:"token_address"`
+	Decimals         int64  `json:"decimals" bson:"decimals"`
+	AmountStr        string `json:"amount_str" bson:"amount_str"`
+	Amount           int64  `json:"amount" bson:"amount"`
+	ProgramID        string `json:"program_id" bson:"program_id"`
+	OuterProgramID   string `json:"outer_program_id" bson:"outer_program_id"`
+	InsIndex         int64  `json:"ins_index" bson:"ins_index"`
+	OuterInsIndex    int64  `json:"outer_ins_index" bson:"outer_ins_index"`
 }
 
 type TransactionAction struct {
-	TxHash     string             `json:"tx_hash"`
-	BlockID    int64              `json:"block_id"`
-	BlockTime  int64              `json:"block_time"`
-	Time       string             `json:"time"`
-	Fee        int64              `json:"fee"`
-	Transfers  []TxActionTransfer `json:"transfers"`
-	Activities []TxAction         `json:"activities"`
+	TxHash     string             `json:"tx_hash" bson:"tx_hash"`
+	BlockID    int64              `json:"block_id" bson:"block_id"`
+	BlockTime  int64              `json:"block_time" bson:"block_time"`
+	Time       string             `json:"time" bson:"time"`
+	Fee        int64              `json:"fee" bson:"fee"`
+	Transfers  []TxActionTransfer `json:"transfers" bson:"transfers"`
+	Activities []TxAction         `json:"activities" bson:"activities"`
 }
 
 type BlockDetail struct {
-	FeeRewards        int64  `json:"fee_rewards"`
-	TransactionsCount int64  `json:"transactions_count"`
-	CurrentSlot       int64  `json:"current_slot"`
-	BlockHeight       int64  `json:"block_height"`
-	BlockTime         int64  `json:"block_time"`
-	Time              string `json:"time"`
-	BlockHash         string `json:"block_hash"`
-	ParentSlot        int64  `json:"parent_slot"`
-	PreviousBlockHash string `json:"previous_block_hash"`
+	FeeRewards        int64  `json:"fee_rewards" bson:"fee_rewards"`
+	TransactionsCount int64  `json:"transactions_count" bson:"transactions_count"`
+	CurrentSlot       int64  `json:"current_slot" bson:"current_slot"`
+	BlockHeight       int64  `json:"block_height" bson:"block_height"`
+	BlockTime         int64  `json:"block_time" bson:"block_time"`
+	Time              string `json:"time" bson:"time"`
+	BlockHash         string `json:"block_hash" bson:"block_hash"`
+	ParentSlot        int64  `json:"parent_slot" bson:"parent_slot"`
+	PreviousBlockHash string `json:"previous_block_hash" bson:"previous_block_hash"`
 }
 
 type PoolMarket struct {
-	PoolAddress    string `json:"pool_address"`
-	ProgramID      string `json:"program_id"`
-	Token1         string `json:"token1"`
-	Token1Account  string `json:"token1_account"`
-	Token2         string `json:"token2"`
-	Token2Account  string `json:"token2_account"`
-	TotalVolume24h int64  `json:"total_volume_24h"`
-	TotalTrade24h  int64  `json:"total_trade_24h"`
-	CreatedTime    int64  `json:"created_time"`
+	PoolAddress    string `json:"pool_address" bson:"pool_address"`
+	ProgramID      string `json:"program_id" bson:"program_id"`
+	Token1         string `json:"token1" bson:"token1"`
+	Token1Account  string `json:"token1_account" bson:"token1_account"`
+	Token2         string `json:"token2" bson:"token2"`
+	Token2Account  string `json:"token2_account" bson:"token2_account"`
+	TotalVolume24h int64  `json:"total_volume_24h" bson:"total_volume_24h"`
+	TotalTrade24h  int64  `json:"total_trade_24h" bson:"total_trade_24h"`
+	CreatedTime    int64  `json:"created_time" bson:"created_time"`
 }
 
 type PoolMarketInfo struct {
-	PoolAddress   string  `json:"pool_address"`
-	ProgramID     string  `json:"program_id"`
-	Token1        string  `json:"token1"`
-	Token2        string  `json:"token2"`
-	Token1Account string  `json:"token1_account"`
-	Token2Account string  `json:"token2_account"`
-	Token1Amount  float64 `json:"token1_amount"`
-	Token2Amount  float64 `json:"token2_amount"`
+	PoolAddress   string  `json:"pool_address" bson:"pool_address"`
+	ProgramID     string  `json:"program_id" bson:"program_id"`
+	Token1        string  `json:"token1" bson:"token1"`
+	Token2        string  `json:"token2" bson:"token2"`
+	Token1Account string  `json:"token1_account" bson:"token1_account"`
+	Token2Account string  `json:"token2_account" bson:"token2_account"`
+	Token1Amount  float64 `json:"token1_amount" bson:"token1_amount"`
+	Token2Amount  float64 `json:"token2_amount" bson:"token2_amount"`
 }
 
 type PoolMarketDayVolume struct {
-	Day    int64   `json:"day"` // yyyymmdd format
-	Volume float64 `json:"volume"`
+	Day    int64   `json:"day" bson:"day"` // yyyymmdd format
+	Volume float64 `json:"volume" bson:"volume"`
 }
 
 type PoolMarketVolume struct {
-	PoolAddress          string                `json:"pool_address"`
-	ProgramID            string                `json:"program_id"`
-	TotalVolume24h       int64                 `json:"total_volume_24h"`
-	TotalVolumeChange24h float64               `json:"total_volume_change_24h"`
-	TotalTrades24h       int64                 `json:"total_trades_24h"`
-	TotalTradesChange24h float64               `json:"total_trades_change_24h"`
-	Days                 []PoolMarketDayVolume `json:"days"`
+	PoolAddress          string                `json:"pool_address" bson:"pool_address"`
+	ProgramID            string                `json:"program_id" bson:"program_id"`
+	TotalVolume24h       int64                 `json:"total_volume_24h" bson:"total_volume_24h"`
+	TotalVolumeChange24h float64               `json:"total_volume_change_24h" bson:"total_volume_change_24h"`
+	TotalTrades24h       int64                 `json:"total_trades_24h" bson:"total_trades_24h"`
+	TotalTradesChange24h float64               `json:"total_trades_change_24h" bson:"total_trades_change_24h"`
+	Days                 []PoolMarketDayVolume `json:"days" bson:"days"`
 }
 
 type APIUsage struct {
-	RemainingCUs     int64   `json:"remaining_cus"`
-	UsageCUs         int64   `json:"usage_cus"`
-	TotalRequests24h int64   `json:"total_requests_24h"`
-	SuccessRate24h   float64 `json:"success_rate_24h"`
-	TotalCU24h       int64   `json:"total_cu_24h"`
+	RemainingCUs     int64   `json:"remaining_cus" bson:"remaining_cus"`
+	UsageCUs         int64   `json:"usage_cus" bson:"usage_cus"`
+	TotalRequests24h int64   `json:"total_requests_24h" bson:"total_requests_24h"`
+	SuccessRate24h   float64 `json:"success_rate_24h" bson:"success_rate_24h"`
+	TotalCU24h       int64   `json:"total_cu_24h" bson:"total_cu_24h"`
 }
 
 type NFTCreator struct {
-	Address  string `json:"address"`
-	Verified int64  `json:"verified"`
-	Share    int64  `json:"share"`
+	Address  string `json:"address" bson:"address"`
+	Verified int64  `json:"verified" bson:"verified"`
+	Share    int64  `json:"share" bson:"share"`
 }
 
 type NFTFile struct {
-	URI  string `json:"uri"`
-	Type string `json:"type"`
+	URI  string `json:"uri" bson:"uri"`
+	Type string `json:"type" bson:"type"`
 }
 
 type NFTProperties struct {
-	Files    []NFTFile `json:"files"`
-	Category string    `json:"category"`
+	Files    []NFTFile `json:"files" bson:"files"`
+	Category string    `json:"category" bson:"category"`
 }
 
 type NFTAttribute struct {
-	TraitType string `json:"trait_type"`
-	Value     string `json:"value"`
+	TraitType string `json:"trait_type" bson:"trait_type"`
+	Value     string `json:"value" bson:"value"`
 }
 
 type NFTMetadata struct {
-	Image                string         `json:"image"`
-	TokenID              int64          `json:"tokenId"`
-	Name                 string         `json:"name"`
-	Symbol               string         `json:"symbol"`
-	Description          string         `json:"description"`
-	SellerFeeBasisPoints int64          `json:"seller_fee_basis_points"`
-	Edition              int64          `json:"edition"`
-	Attributes           []NFTAttribute `json:"attributes"`
-	Properties           NFTProperties  `json:"properties"`
-	Retried              int64          `json:"retried"`
+	Image                string         `json:"image" bson:"image"`
+	TokenID              int64          `json:"tokenId" bson:"tokenId"`
+	Name                 string         `json:"name" bson:"name"`
+	Symbol               string         `json:"symbol" bson:"symbol"`
+	Description          string         `json:"description" bson:"description"`
+	SellerFeeBasisPoints int64          `json:"seller_fee_basis_points" bson:"seller_fee_basis_points"`
+	Edition              int64          `json:"edition" bson:"edition"`
+	Attributes           []NFTAttribute `json:"attributes" bson:"attributes"`
+	Properties           NFTProperties  `json:"properties" bson:"properties"`
+	Retried              int64          `json:"retried" bson:"retried"`
 }
 
 type NFTData struct {
-	Name                 string       `json:"name"`
-	Symbol               string       `json:"symbol"`
-	URI                  string       `json:"uri"`
-	SellerFeeBasisPoints int64        `json:"sellerFeeBasisPoints"`
-	Creators             []NFTCreator `json:"creators"`
-	ID                   int64        `json:"id"`
+	Name                 string       `json:"name" bson:"name"`
+	Symbol               string       `json:"symbol" bson:"symbol"`
+	URI                  string       `json:"uri" bson:"uri"`
+	SellerFeeBasisPoints int64        `json:"sellerFeeBasisPoints" bson:"sellerFeeBasisPoints"`
+	Creators             []NFTCreator `json:"creators" bson:"creators"`
+	ID                   int64        `json:"id" bson:"id"`
 }
 
 type NFTInfo struct {
-	Address       string      `json:"address"`
-	Collection    string      `json:"collection"`
-	CollectionID  string      `json:"collectionId"`
-	CollectionKey string      `json:"collectionKey"`
-	CreatedTime   int64       `json:"createdTime"`
-	Data          NFTData     `json:"data"`
-	Meta          NFTMetadata `json:"meta"`
-	MintTx        string      `json:"mintTx"`
+	Address       string      `json:"address" bson:"address"`
+	Collection    string      `json:"collection" bson:"collection"`
+	CollectionID  string      `json:"collectionId" bson:"collectionId"`
+	CollectionKey string      `json:"collectionKey" bson:"collectionKey"`
+	CreatedTime   int64       `json:"createdTime" bson:"createdTime"`
+	Data          NFTData     `json:"data" bson:"data"`
+	Meta          NFTMetadata `json:"meta" bson:"meta"`
+	MintTx        string      `json:"mintTx" bson:"mintTx"`
 }
 
 type NFTActivity struct {
-	BlockID            int64           `json:"block_id"`
-	TransID            string          `json:"trans_id"`
-	BlockTime          int64           `json:"block_time"`
-	Time               string          `json:"time"`
-	ActivityType       NFTActivityType `json:"activity_type"`
-	FromAddress        string          `json:"from_address"`
-	ToAddress          string          `json:"to_address"`
-	TokenAddress       string          `json:"token_address"`
-	MarketplaceAddress string          `json:"marketplace_address"`
-	CollectionAddress  string          `json:"collection_address"`
-	Amount             int64           `json:"amount"`
-	Price              int64           `json:"price"`
-	CurrencyToken      string          `json:"currency_token"`
-	CurrencyDecimals   int64           `json:"currency_decimals"`
+	BlockID            int64           `json:"block_id" bson:"block_id"`
+	TransID            string          `json:"trans_id" bson:"trans_id"`
+	BlockTime          int64           `json:"block_time" bson:"block_time"`
+	Time               string          `json:"time" bson:"time"`
+	ActivityType       NFTActivityType `json:"activity_type" bson:"activity_type"`
+	FromAddress        string          `json:"from_address" bson:"from_address"`
+	ToAddress          string          `json:"to_address" bson:"to_address"`
+	TokenAddress       string          `json:"token_address" bson:"token_address"`
+	MarketplaceAddress string          `json:"marketplace_address" bson:"marketplace_address"`
+	CollectionAddress  string          `json:"collection_address" bson:"collection_address"`
+	Amount             int64           `json:"amount" bson:"amount"`
+	Price              int64           `json:"price" bson:"price"`
+	CurrencyToken      string          `json:"currency_token" bson:"currency_token"`
+	CurrencyDecimals   int64           `json:"currency_decimals" bson:"currency_decimals"`
 }
 
 type NFTCollection struct {
-	CollectionID    string   `json:"collection_id"`
-	Name            string   `json:"name"`
-	Symbol          string   `json:"symbol"`
-	FloorPrice      float64  `json:"floor_price"`
-	Items           int64    `json:"items"`
-	Marketplaces    []string `json:"marketplaces"`
-	Volumes         float64  `json:"volumes"`
-	TotalVolPrev24h float64  `json:"total_vol_prev_24h"`
+	CollectionID    string   `json:"collection_id" bson:"collection_id"`
+	Name            string   `json:"name" bson:"name"`
+	Symbol          string   `json:"symbol" bson:"symbol"`
+	FloorPrice      float64  `json:"floor_price" bson:"floor_price"`
+	Items           int64    `json:"items" bson:"items"`
+	Marketplaces    []string `json:"marketplaces" bson:"marketplaces"`
+	Volumes         float64  `json:"volumes" bson:"volumes"`
+	TotalVolPrev24h float64  `json:"total_vol_prev_24h" bson:"total_vol_prev_24h"`
 }
 
 type NFTTradeInfo struct {
-	TradeTime        int64  `json:"trade_time"`
-	Signature        string `json:"signature"`
-	MarketID         string `json:"market_id"`
-	Type             string `json:"type"`
-	Price            string `json:"price"`
-	CurrencyToken    string `json:"currency_token"`
-	CurrencyDecimals int64  `json:"currency_decimals"`
-	Seller           string `json:"seller"`
-	Buyer            string `json:"buyer"`
+	TradeTime        int64  `json:"trade_time" bson:"trade_time"`
+	Signature        string `json:"signature" bson:"signature"`
+	MarketID         string `json:"market_id" bson:"market_id"`
+	Type             string `json:"type" bson:"type"`
+	Price            string `json:"price" bson:"price"`
+	CurrencyToken    string `json:"currency_token" bson:"currency_token"`
+	CurrencyDecimals int64  `json:"currency_decimals" bson:"currency_decimals"`
+	Seller           string `json:"seller" bson:"seller"`
+	Buyer            string `json:"buyer" bson:"buyer"`
 }
 
 type NFTCollectionMeta struct {
-	Name   string `json:"name"`
-	Family string `json:"family"`
+	Name   string `json:"name" bson:"name"`
+	Family string `json:"family" bson:"family"`
 }
 
 type NFTMetaProperties struct {
-	Files    []NFTFile    `json:"files"`
-	Category string       `json:"category"`
-	Creators []NFTCreator `json:"creators"`
+	Files    []NFTFile    `json:"files" bson:"files"`
+	Category string       `json:"category" bson:"category"`
+	Creators []NFTCreator `json:"creators" bson:"creators"`
 }
 
 type NFTItemMetadata struct {
-	Name                 string            `json:"name"`
-	Symbol               string            `json:"symbol"`
-	Description          string            `json:"description"`
-	SellerFeeBasisPoints int64             `json:"seller_fee_basis_points"`
-	Image                string            `json:"image"`
-	ExternalURL          string            `json:"external_url"`
-	Collection           NFTCollectionMeta `json:"collection"`
-	Attributes           []NFTAttribute    `json:"attributes"`
-	Properties           NFTMetaProperties `json:"properties"`
+	Name                 string            `json:"name" bson:"name"`
+	Symbol               string            `json:"symbol" bson:"symbol"`
+	Description          string            `json:"description" bson:"description"`
+	SellerFeeBasisPoints int64             `json:"seller_fee_basis_points" bson:"seller_fee_basis_points"`
+	Image                string            `json:"image" bson:"image"`
+	ExternalURL          string            `json:"external_url" bson:"external_url"`
+	Collection           NFTCollectionMeta `json:"collection" bson:"collection"`
+	Attributes           []NFTAttribute    `json:"attributes" bson:"attributes"`
+	Properties           NFTMetaProperties `json:"properties" bson:"properties"`
 }
 
 type NFTItemData struct {
-	Name                 string       `json:"name"`
-	Symbol               string       `json:"symbol"`
-	URI                  string       `json:"uri"`
-	SellerFeeBasisPoints int64        `json:"sellerFeeBasisPoints"`
-	Creators             []NFTCreator `json:"creators"`
-	ID                   int64        `json:"id"`
+	Name                 string       `json:"name" bson:"name"`
+	Symbol               string       `json:"symbol" bson:"symbol"`
+	URI                  string       `json:"uri" bson:"uri"`
+	SellerFeeBasisPoints int64        `json:"sellerFeeBasisPoints" bson:"sellerFeeBasisPoints"`
+	Creators             []NFTCreator `json:"creators" bson:"creators"`
+	ID                   int64        `json:"id" bson:"id"`
 }
 
 type NFTItemInfo struct {
-	Address      string          `json:"address"`
-	TokenName    string          `json:"token_name"`
-	TokenSymbol  string          `json:"token_symbol"`
-	CollectionID string          `json:"collection_id"`
-	Data         NFTItemData     `json:"data"`
-	Meta         NFTItemMetadata `json:"meta"`
-	MintTx       string          `json:"mint_tx"`
-	CreatedTime  int64           `json:"created_time"`
+	Address      string          `json:"address" bson:"address"`
+	TokenName    string          `json:"token_name" bson:"token_name"`
+	TokenSymbol  string          `json:"token_symbol" bson:"token_symbol"`
+	CollectionID string          `json:"collection_id" bson:"collection_id"`
+	Data         NFTItemData     `json:"data" bson:"data"`
+	Meta         NFTItemMetadata `json:"meta" bson:"meta"`
+	MintTx       string          `json:"mint_tx" bson:"mint_tx"`
+	CreatedTime  int64           `json:"created_time" bson:"created_time"`
 }
 
 type NFTCollectionItem struct {
-	TradeInfo NFTTradeInfo `json:"tradeInfo"`
-	Info      NFTItemInfo  `json:"info"`
+	TradeInfo NFTTradeInfo `json:"tradeInfo" bson:"tradeInfo"`
+	Info      NFTItemInfo  `json:"info" bson:"info"`
 }
 
 type Client struct {
