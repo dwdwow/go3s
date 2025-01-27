@@ -810,7 +810,7 @@ func (c *Client) ChainInfo(ctx context.Context) (ChainInfo, error) {
 }
 
 type AccountTransfersParams struct {
-	ActivityType      AccountActivityType `json:"activity_type,omitempty"`
+	ActivityType      []AccountActivityType `json:"activity_type,omitempty"`
 	TokenAccount      string              `json:"token_account,omitempty"`
 	FromAddress       string              `json:"from,omitempty"`
 	ToAddress         string              `json:"to,omitempty"`
@@ -903,7 +903,7 @@ func (c *Client) AccountTokenAccountsPagingQuery(ctx context.Context, startPage,
 }
 
 type AccountDefiActivitiesParams struct {
-	ActivityType   ActivityType  `json:"activity_type,omitempty"`
+	ActivityType   []ActivityType  `json:"activity_type,omitempty"`
 	FromAddress    string        `json:"from_address,omitempty"`
 	Platform       []string      `json:"platform,omitempty"`
 	Source         []string      `json:"source,omitempty"`
@@ -1098,15 +1098,15 @@ func (c *Client) AccountRewardsExport(ctx context.Context, address string, timeF
 }
 
 type AccountTransfersExportParams struct {
-	ActivityType      AccountActivityType `json:"activity_type,omitempty"`
-	TokenAccount      string              `json:"token_account,omitempty"`
-	FromAddress       string              `json:"from_address,omitempty"`
-	ToAddress         string              `json:"to_address,omitempty"`
-	Token             string              `json:"token,omitempty"`
-	AmountRange       []float64           `json:"amount,omitempty"`
-	BlockTimeRange    []int64             `json:"block_time,omitempty"`
-	ExcludeAmountZero bool                `json:"exclude_amount_zero,omitempty"`
-	Flow              Flow                `json:"flow,omitempty"`
+	ActivityType      []AccountActivityType `json:"activity_type,omitempty"`
+	TokenAccount      string                `json:"token_account,omitempty"`
+	FromAddress       string                `json:"from_address,omitempty"`
+	ToAddress         string                `json:"to_address,omitempty"`
+	Token             string                `json:"token,omitempty"`
+	AmountRange       []float64             `json:"amount,omitempty"`
+	BlockTimeRange    []int64               `json:"block_time,omitempty"`
+	ExcludeAmountZero bool                  `json:"exclude_amount_zero,omitempty"`
+	Flow              Flow                  `json:"flow,omitempty"`
 }
 
 func (c *Client) AccountTransfersExport(ctx context.Context, address string, optParams *AccountTransfersExportParams) ([]byte, error) {
@@ -1122,16 +1122,16 @@ func (c *Client) AccountTransfersExport(ctx context.Context, address string, opt
 }
 
 type TokenTransfersParams struct {
-	ActivityType      ActivityType  `json:"activity_type,omitempty"`
-	FromAddress       string        `json:"from,omitempty"`
-	ToAddress         string        `json:"to,omitempty"`
-	AmountRange       []float64     `json:"amount,omitempty"`
-	BlockTimeRange    []int64       `json:"block_time,omitempty"`
-	ExcludeAmountZero bool          `json:"exclude_amount_zero,omitempty"`
-	Page              int64         `json:"page" default:"1"`
-	PageSize          LargePageSize `json:"page_size" default:"100"`
-	SortBy            SortBy        `json:"sort_by" default:"block_time"`
-	SortOrder         SortOrder     `json:"sort_order" default:"desc"`
+	ActivityType      []ActivityType `json:"activity_type,omitempty"`
+	FromAddress       string         `json:"from,omitempty"`
+	ToAddress         string         `json:"to,omitempty"`
+	AmountRange       []float64      `json:"amount,omitempty"`
+	BlockTimeRange    []int64        `json:"block_time,omitempty"`
+	ExcludeAmountZero bool           `json:"exclude_amount_zero,omitempty"`
+	Page              int64          `json:"page" default:"1"`
+	PageSize          LargePageSize  `json:"page_size" default:"100"`
+	SortBy            SortBy         `json:"sort_by" default:"block_time"`
+	SortOrder         SortOrder      `json:"sort_order" default:"desc"`
 }
 
 func (c *Client) TokenTransfers(ctx context.Context, address string, optParams *TokenTransfersParams) ([]Transfer, error) {
@@ -1168,16 +1168,16 @@ func (c *Client) TokenTransfersPagingQuery(ctx context.Context, startPage, total
 }
 
 type TokenDefiActivitiesParams struct {
-	FromAddress    string        `json:"from_address,omitempty"`
-	Platform       []string      `json:"platform,omitempty"`
-	Source         []string      `json:"source,omitempty"`
-	ActivityType   ActivityType  `json:"activity_type,omitempty"`
-	Token          string        `json:"token,omitempty"`
-	BlockTimeRange []int64       `json:"block_time,omitempty"`
-	Page           int64         `json:"page" default:"1"`
-	PageSize       LargePageSize `json:"page_size" default:"100"`
-	SortBy         SortBy        `json:"sort_by" default:"block_time"`
-	SortOrder      SortOrder     `json:"sort_order" default:"desc"`
+	FromAddress    string         `json:"from_address,omitempty"`
+	Platform       []string       `json:"platform,omitempty"`
+	Source         []string       `json:"source,omitempty"`
+	ActivityType   []ActivityType `json:"activity_type,omitempty"`
+	Token          string         `json:"token,omitempty"`
+	BlockTimeRange []int64        `json:"block_time,omitempty"`
+	Page           int64          `json:"page" default:"1"`
+	PageSize       LargePageSize  `json:"page_size" default:"100"`
+	SortBy         SortBy         `json:"sort_by" default:"block_time"`
+	SortOrder      SortOrder      `json:"sort_order" default:"desc"`
 }
 
 func (c *Client) TokenDefiActivities(ctx context.Context, address string, optParams *TokenDefiActivitiesParams) ([]DefiActivity, error) {
@@ -1423,7 +1423,7 @@ type NFTActivitiesParams struct {
 	FromAddress    string          `json:"from,omitempty"`
 	ToAddress      string          `json:"to,omitempty"`
 	Source         []string        `json:"source,omitempty"`
-	ActivityType   NFTActivityType `json:"activity_type,omitempty"`
+	ActivityType   []NFTActivityType `json:"activity_type,omitempty"`
 	Token          string          `json:"token,omitempty"`
 	Collection     string          `json:"collection,omitempty"`
 	CurrencyToken  string          `json:"currency_token,omitempty"`
