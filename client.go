@@ -815,7 +815,7 @@ type AccountTransfersParams struct {
 	FromAddress       string              `json:"from,omitempty"`
 	ToAddress         string              `json:"to,omitempty"`
 	Token             string              `json:"token,omitempty"`
-	AmountRange       []int64             `json:"amount,omitempty"`
+	AmountRange       []float64           `json:"amount,omitempty"`
 	BlockTimeRange    []int64             `json:"block_time,omitempty"`
 	ExcludeAmountZero bool                `json:"exclude_amount_zero,omitempty"`
 	Flow              Flow                `json:"flow,omitempty"`
@@ -952,7 +952,7 @@ func (c *Client) AccountDefiActivitiesPagingQuery(ctx context.Context, startPage
 
 type AccountBalanceChangesParams struct {
 	Token          string        `json:"token,omitempty"`
-	AmountRange    []int64       `json:"amount,omitempty"`
+	AmountRange    []float64     `json:"amount,omitempty"`
 	BlockTimeRange []int64       `json:"block_time,omitempty"`
 	Page           int64         `json:"page" default:"1"`
 	PageSize       LargePageSize `json:"page_size" default:"100"`
@@ -1126,7 +1126,7 @@ type TokenTransfersParams struct {
 	ActivityType      ActivityType  `json:"activity_type,omitempty"`
 	FromAddress       string        `json:"from,omitempty"`
 	ToAddress         string        `json:"to,omitempty"`
-	AmountRange       []int64       `json:"amount,omitempty"`
+	AmountRange       []float64     `json:"amount,omitempty"`
 	BlockTimeRange    []int64       `json:"block_time,omitempty"`
 	ExcludeAmountZero bool          `json:"exclude_amount_zero,omitempty"`
 	Page              int64         `json:"page" default:"1"`
