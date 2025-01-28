@@ -393,11 +393,11 @@ type TokenPrice struct {
 }
 
 type TokenHolder struct {
-	Address  string `json:"address" bson:"address"`
-	Amount   int64  `json:"amount" bson:"amount"`
-	Decimals int64  `json:"decimals" bson:"decimals"`
-	Owner    string `json:"owner" bson:"owner"`
-	Rank     int64  `json:"rank" bson:"rank"`
+	Address  string  `json:"address" bson:"address"`
+	Amount   big.Int `json:"amount" bson:"amount"`
+	Decimals int64   `json:"decimals" bson:"decimals"`
+	Owner    string  `json:"owner" bson:"owner"`
+	Rank     int64   `json:"rank" bson:"rank"`
 }
 
 type TokenMeta struct {
