@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"math"
-	"math/big"
 	"net/url"
 	"os"
 	"strconv"
@@ -131,7 +130,7 @@ type Transfer struct {
 	ToAddress     string       `json:"to_address" bson:"to_address"`
 	TokenAddress  string       `json:"token_address" bson:"token_address"`
 	TokenDecimals int64        `json:"token_decimals" bson:"token_decimals"`
-	Amount        big.Int      `json:"amount" bson:"amount"`
+	Amount        float64      `json:"amount" bson:"amount"`
 	Flow          Flow         `json:"flow" bson:"flow"`
 }
 
@@ -393,8 +392,9 @@ type TokenPrice struct {
 }
 
 type TokenHolder struct {
-	Address  string  `json:"address" bson:"address"`
-	Amount   big.Int `json:"amount" bson:"amount"`
+	Address string `json:"address" bson:"address"`
+	// Amount is a int, but too large, so use float64 to store it.
+	Amount   float64 `json:"amount" bson:"amount"`
 	Decimals int64   `json:"decimals" bson:"decimals"`
 	Owner    string  `json:"owner" bson:"owner"`
 	Rank     int64   `json:"rank" bson:"rank"`
