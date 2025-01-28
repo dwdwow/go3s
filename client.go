@@ -911,7 +911,7 @@ type AccountDefiActivitiesParams struct {
 	Token          string         `json:"token,omitempty"`
 	BlockTimeRange []int64        `json:"block_time,omitempty"`
 	Page           int64          `json:"page" default:"1"`
-	PageSize       SmallPageSize  `json:"page_size" default:"40"`
+	PageSize       LargePageSize  `json:"page_size" default:"100"`
 	SortBy         SortBy         `json:"sort_by" default:"block_time"`
 	SortOrder      SortOrder      `json:"sort_order" default:"desc"`
 }
