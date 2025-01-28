@@ -6,6 +6,82 @@ import (
 	"testing"
 )
 
+func TestAmount(t *testing.T) {
+	// Test empty data
+	var a Amount
+	err := a.UnmarshalJSON([]byte{})
+	if err != nil {
+		t.Error("Expected no error for empty data, got:", err)
+	}
+	if a != "0" {
+		t.Error("Expected '0' for empty data, got:", a)
+	}
+
+	// Test quoted strings
+	testCases := []struct {
+		input    []byte
+		expected Amount
+		hasError bool
+	}{
+		{[]byte(`""`), "0", false},
+		{[]byte(`"123.45"`), "123.45", false},
+		{[]byte(`"abc"`), "abc", false},
+		{[]byte(`"`), "", true},
+		{[]byte(`"test`), "", true},
+	}
+
+	for _, tc := range testCases {
+		var a Amount
+		err := a.UnmarshalJSON(tc.input)
+		if tc.hasError && err == nil {
+			t.Errorf("Expected error for input %s, got none", tc.input)
+		}
+		if !tc.hasError && err != nil {
+			t.Errorf("Unexpected error for input %s: %v", tc.input, err)
+		}
+		if !tc.hasError && a != tc.expected {
+			t.Errorf("For input %s, expected %s, got %s", tc.input, tc.expected, a)
+		}
+	}
+
+	// Test numeric values
+	numericCases := []struct {
+		input    []byte
+		expected Amount
+	}{
+		{[]byte(`123`), "123"},
+		{[]byte(`123.45`), "123.45"},
+		{[]byte(`0`), "0"},
+		{[]byte(`-123.45`), "-123.45"},
+	}
+
+	for _, tc := range numericCases {
+		var a Amount
+		err := a.UnmarshalJSON(tc.input)
+		if err != nil {
+			t.Errorf("Unexpected error for input %s: %v", tc.input, err)
+		}
+		if a != tc.expected {
+			t.Errorf("For input %s, expected %s, got %s", tc.input, tc.expected, a)
+		}
+	}
+
+	// Test MarshalJSON
+	a = Amount("123.45")
+	data, err := a.MarshalJSON()
+	if err != nil {
+		t.Error("Unexpected error in MarshalJSON:", err)
+	}
+	if string(data) != "123.45" {
+		t.Errorf("Expected MarshalJSON to return '123.45', got %s", string(data))
+	}
+
+	// Test Float64
+	if a.Float64() != 123.45 {
+		t.Errorf("Expected Float64 to return 123.45, got %f", a.Float64())
+	}
+}
+
 func TestChainInfo(t *testing.T) {
 	client := NewV2Client("")
 	chainInfo, err := client.ChainInfo(context.Background())

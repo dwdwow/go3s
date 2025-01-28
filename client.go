@@ -2,6 +2,8 @@ package go3s
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"math"
 	"net/url"
@@ -119,20 +121,6 @@ const (
 	TokenSortByMarketCap   TokenSortBy = "market_cap"
 	TokenSortByCreatedTime TokenSortBy = "created_time"
 )
-
-type Transfer struct {
-	BlockID       int64        `json:"block_id" bson:"block_id"`
-	TransID       string       `json:"trans_id" bson:"trans_id"`
-	BlockTime     int64        `json:"block_time" bson:"block_time"`
-	Time          string       `json:"time" bson:"time"`
-	ActivityType  ActivityType `json:"activity_type" bson:"activity_type"`
-	FromAddress   string       `json:"from_address" bson:"from_address"`
-	ToAddress     string       `json:"to_address" bson:"to_address"`
-	TokenAddress  string       `json:"token_address" bson:"token_address"`
-	TokenDecimals int64        `json:"token_decimals" bson:"token_decimals"`
-	Amount        float64      `json:"amount" bson:"amount"`
-	Flow          Flow         `json:"flow" bson:"flow"`
-}
 
 type NFTCollectionSortBy string
 
@@ -252,40 +240,99 @@ const (
 	TxFilterAll        TxFilter = "all"
 )
 
+// Amount is a string that represents the amount of a token.
+// It is used to represent the amount of a token in the database.
+// Solscan API returns the amount of a token in number format, sometimes it is a string.
+type Amount string
+
+func (a Amount) MarshalJSON() ([]byte, error) {
+	return []byte(a), nil
+}
+
+func (a *Amount) UnmarshalJSON(data []byte) error {
+	if len(data) == 0 {
+		*a = "0"
+		return nil
+	}
+	if data[0] == '"' {
+		if len(data) == 1 {
+			return errors.New("go3s: Amount can not unmarshal a single quote")
+		}
+		if data[len(data)-1] != '"' {
+			return errors.New("go3s: Amount can not unmarshal a quote without a closing quote")
+		}
+		if len(data) == 2 {
+			*a = "0"
+			return nil
+		}
+		*a = Amount(data[1 : len(data)-1])
+		return nil
+	}
+	var v float64
+	err := json.Unmarshal(data, &v)
+	if err != nil {
+		return err
+	}
+	*a = Amount(strconv.FormatFloat(v, 'f', -1, 64))
+	return nil
+}
+
+func (a Amount) Float64() float64 {
+	v, err := strconv.ParseFloat(string(a), 64)
+	if err != nil {
+		panic(fmt.Sprintf("go3s: Amount can not convert to float64: %s, error: %s", a, err))
+	}
+	return v
+}
+
 type TokenAccount struct {
 	TokenAccount  string `json:"token_account" bson:"token_account"`
 	TokenAddress  string `json:"token_address" bson:"token_address"`
-	Amount        int64  `json:"amount" bson:"amount"`
+	Amount        Amount `json:"amount" bson:"amount"`
 	TokenDecimals int64  `json:"token_decimals" bson:"token_decimals"`
 	Owner         string `json:"owner" bson:"owner"`
+}
+
+type Transfer struct {
+	BlockID       int64        `json:"block_id" bson:"block_id"`
+	TransID       string       `json:"trans_id" bson:"trans_id"`
+	BlockTime     int64        `json:"block_time" bson:"block_time"`
+	Time          string       `json:"time" bson:"time"`
+	ActivityType  ActivityType `json:"activity_type" bson:"activity_type"`
+	FromAddress   string       `json:"from_address" bson:"from_address"`
+	ToAddress     string       `json:"to_address" bson:"to_address"`
+	TokenAddress  string       `json:"token_address" bson:"token_address"`
+	TokenDecimals int64        `json:"token_decimals" bson:"token_decimals"`
+	Amount        Amount       `json:"amount" bson:"amount"`
+	Flow          Flow         `json:"flow" bson:"flow"`
 }
 
 type ChildRouter struct {
 	Token1         string `json:"token1" bson:"token1"`
 	Token1Decimals int64  `json:"token1_decimals" bson:"token1_decimals"`
-	Amount1        int64  `json:"amount1" bson:"amount1"`
+	Amount1        Amount `json:"amount1" bson:"amount1"`
 	Token2         string `json:"token2" bson:"token2"`
 	Token2Decimals int64  `json:"token2_decimals" bson:"token2_decimals"`
-	Amount2        int64  `json:"amount2" bson:"amount2"`
+	Amount2        Amount `json:"amount2" bson:"amount2"`
 }
 
 type Router struct {
 	Token1         string        `json:"token1" bson:"token1"`
 	Token1Decimals int64         `json:"token1_decimals" bson:"token1_decimals"`
-	Amount1        int64         `json:"amount1" bson:"amount1"`
+	Amount1        Amount        `json:"amount1" bson:"amount1"`
 	Token2         string        `json:"token2" bson:"token2"`
 	Token2Decimals int64         `json:"token2_decimals" bson:"token2_decimals"`
-	Amount2        int64         `json:"amount2" bson:"amount2"`
+	Amount2        Amount        `json:"amount2" bson:"amount2"`
 	ChildRouters   []ChildRouter `json:"child_routers" bson:"child_routers"`
 }
 
 type AmountInfo struct {
 	Token1         string   `json:"token1" bson:"token1"`
 	Token1Decimals int64    `json:"token1_decimals" bson:"token1_decimals"`
-	Amount1        int64    `json:"amount1" bson:"amount1"`
+	Amount1        Amount   `json:"amount1" bson:"amount1"`
 	Token2         string   `json:"token2" bson:"token2"`
 	Token2Decimals int64    `json:"token2_decimals" bson:"token2_decimals"`
-	Amount2        int64    `json:"amount2" bson:"amount2"`
+	Amount2        Amount   `json:"amount2" bson:"amount2"`
 	Routers        []Router `json:"routers" bson:"routers"`
 }
 
@@ -311,11 +358,11 @@ type AccountChangeActivity struct {
 	TokenAddress  string            `json:"token_address" bson:"token_address"`
 	TokenAccount  string            `json:"token_account" bson:"token_account"`
 	TokenDecimals int64             `json:"token_decimals" bson:"token_decimals"`
-	Amount        int64             `json:"amount" bson:"amount"`
-	PreBalance    int64             `json:"pre_balance" bson:"pre_balance"`
-	PostBalance   int64             `json:"post_balance" bson:"post_balance"`
+	Amount        Amount            `json:"amount" bson:"amount"`
+	PreBalance    Amount            `json:"pre_balance" bson:"pre_balance"`
+	PostBalance   Amount            `json:"post_balance" bson:"post_balance"`
 	ChangeType    BalanceChangeType `json:"change_type" bson:"change_type"`
-	Fee           int64             `json:"fee" bson:"fee"`
+	Fee           Amount            `json:"fee" bson:"fee"`
 }
 
 type ParsedCancelAllAndPlaceOrders struct {
@@ -326,7 +373,7 @@ type ParsedCancelAllAndPlaceOrders struct {
 
 type Transaction struct {
 	Slot               int64                           `json:"slot" bson:"slot"`
-	Fee                int64                           `json:"fee" bson:"fee"`
+	Fee                Amount                          `json:"fee" bson:"fee"`
 	Status             TxStatus                        `json:"status" bson:"status"`
 	Signer             []string                        `json:"signer" bson:"signer"`
 	BlockTime          int64                           `json:"block_time" bson:"block_time"`
@@ -337,15 +384,15 @@ type Transaction struct {
 }
 
 type AccountStake struct {
-	Amount               int64              `json:"amount" bson:"amount"`
+	Amount               Amount             `json:"amount" bson:"amount"`
 	Role                 []StakeRole        `json:"role" bson:"role"`
 	Status               StakeAccountStatus `json:"status" bson:"status"`
 	Type                 StakeAccountType   `json:"type" bson:"type"`
 	Voter                string             `json:"voter" bson:"voter"`
-	ActiveStakeAmount    int64              `json:"active_stake_amount" bson:"active_stake_amount"`
-	DelegatedStakeAmount int64              `json:"delegated_stake_amount" bson:"delegated_stake_amount"`
-	SolBalance           int                `json:"sol_balance" bson:"sol_balance"`
-	TotalReward          string             `json:"total_reward" bson:"total_reward"`
+	ActiveStakeAmount    Amount             `json:"active_stake_amount" bson:"active_stake_amount"`
+	DelegatedStakeAmount Amount             `json:"delegated_stake_amount" bson:"delegated_stake_amount"`
+	SolBalance           Amount             `json:"sol_balance" bson:"sol_balance"`
+	TotalReward          Amount             `json:"total_reward" bson:"total_reward"`
 	StakeAccount         string             `json:"stake_account" bson:"stake_account"`
 	ActivationEpoch      int64              `json:"activation_epoch" bson:"activation_epoch"`
 	StakeType            int64              `json:"stake_type" bson:"stake_type"`
@@ -353,7 +400,7 @@ type AccountStake struct {
 
 type AccountDetail struct {
 	Account      string      `json:"account" bson:"account"`
-	Lamports     int64       `json:"lamports" bson:"lamports"`
+	Lamports     Amount      `json:"lamports" bson:"lamports"`
 	Type         AccountType `json:"type" bson:"type"`
 	Executable   bool        `json:"executable" bson:"executable"`
 	OwnerProgram string      `json:"owner_program" bson:"owner_program"`
@@ -369,8 +416,8 @@ type Market struct {
 	Token2             string  `json:"token_2" bson:"token_2"`
 	TokenAccount1      string  `json:"token_account_1" bson:"token_account_1"`
 	TokenAccount2      string  `json:"token_account_2" bson:"token_account_2"`
-	TotalTrades24h     int64   `json:"total_trades_24h" bson:"total_trades_24h"`
-	TotalTradesPrev24h int64   `json:"total_trades_prev_24h" bson:"total_trades_prev_24h"`
+	TotalTrades24h     Amount  `json:"total_trades_24h" bson:"total_trades_24h"`
+	TotalTradesPrev24h Amount  `json:"total_trades_prev_24h" bson:"total_trades_prev_24h"`
 	TotalVolume24h     float64 `json:"total_volume_24h" bson:"total_volume_24h"`
 	TotalVolumePrev24h float64 `json:"total_volume_prev_24h" bson:"total_volume_prev_24h"`
 }
@@ -392,12 +439,11 @@ type TokenPrice struct {
 }
 
 type TokenHolder struct {
-	Address string `json:"address" bson:"address"`
-	// Amount is a int, but too large, so use float64 to store it.
-	Amount   float64 `json:"amount" bson:"amount"`
-	Decimals int64   `json:"decimals" bson:"decimals"`
-	Owner    string  `json:"owner" bson:"owner"`
-	Rank     int64   `json:"rank" bson:"rank"`
+	Address  string `json:"address" bson:"address"`
+	Amount   Amount `json:"amount" bson:"amount"`
+	Decimals int64  `json:"decimals" bson:"decimals"`
+	Owner    string `json:"owner" bson:"owner"`
+	Rank     int64  `json:"rank" bson:"rank"`
 }
 
 type TokenMeta struct {
@@ -447,7 +493,7 @@ type TransferInfo struct {
 	TokenAddress     string                 `json:"token_address" bson:"token_address"`
 	Decimals         int64                  `json:"decimals" bson:"decimals"`
 	AmountStr        string                 `json:"amount_str" bson:"amount_str"`
-	Amount           int64                  `json:"amount" bson:"amount"`
+	Amount           Amount                 `json:"amount" bson:"amount"`
 	ProgramID        string                 `json:"program_id" bson:"program_id"`
 	OuterProgramID   string                 `json:"outer_program_id" bson:"outer_program_id"`
 	InsIndex         int64                  `json:"ins_index" bson:"ins_index"`
@@ -473,19 +519,18 @@ type InstructionData struct {
 
 type BalanceChange struct {
 	Address      string `json:"address" bson:"address"`
-	PreBalance   string `json:"pre_balance" bson:"pre_balance"`
-	PostBalance  string `json:"post_balance" bson:"post_balance"`
-	ChangeAmount string `json:"change_amount" bson:"change_amount"`
+	PreBalance   Amount `json:"pre_balance" bson:"pre_balance"`
+	PostBalance  Amount `json:"post_balance" bson:"post_balance"`
+	ChangeAmount Amount `json:"change_amount" bson:"change_amount"`
 }
 
 type TokenBalanceChange struct {
 	Address      string `json:"address" bson:"address"`
 	ChangeType   string `json:"change_type" bson:"change_type"`
-	ChangeAmount string `json:"change_amount" bson:"change_amount"`
+	ChangeAmount Amount `json:"change_amount" bson:"change_amount"`
 	Decimals     int64  `json:"decimals" bson:"decimals"`
-	PostBalance  string `json:"post_balance" bson:"post_balance"`
-	// if prebalance is 0, it is number, otherwise it is string
-	PreBalance   any    `json:"pre_balance" bson:"pre_balance"`
+	PostBalance  Amount `json:"post_balance" bson:"post_balance"`
+	PreBalance   Amount `json:"pre_balance" bson:"pre_balance"`
 	TokenAddress string `json:"token_address" bson:"token_address"`
 	Owner        string `json:"owner" bson:"owner"`
 	PostOwner    string `json:"post_owner" bson:"post_owner"`
@@ -494,7 +539,7 @@ type TokenBalanceChange struct {
 
 type TransactionDetail struct {
 	BlockID              int64                `json:"block_id" bson:"block_id"`
-	Fee                  int64                `json:"fee" bson:"fee"`
+	Fee                  Amount               `json:"fee" bson:"fee"`
 	Reward               []interface{}        `json:"reward" bson:"reward"`
 	SolBalChange         []BalanceChange      `json:"sol_bal_change" bson:"sol_bal_change"`
 	TokenBalChange       []TokenBalanceChange `json:"token_bal_change" bson:"token_bal_change"`
@@ -521,9 +566,9 @@ type TxActionData struct {
 	Account        string  `json:"account" bson:"account"`
 	Token1         string  `json:"token_1" bson:"token_1"`
 	Token2         string  `json:"token_2" bson:"token_2"`
-	Amount1        any     `json:"amount_1" bson:"amount_1"`
+	Amount1        Amount  `json:"amount_1" bson:"amount_1"`
 	Amount1Str     string  `json:"amount_1_str" bson:"amount_1_str"`
-	Amount2        any     `json:"amount_2" bson:"amount_2"`
+	Amount2        Amount  `json:"amount_2" bson:"amount_2"`
 	Amount2Str     string  `json:"amount_2_str" bson:"amount_2_str"`
 	TokenDecimal1  int64   `json:"token_decimal_1" bson:"token_decimal_1"`
 	TokenDecimal2  int64   `json:"token_decimal_2" bson:"token_decimal_2"`
@@ -554,7 +599,7 @@ type TxActionTransfer struct {
 	TokenAddress     string `json:"token_address" bson:"token_address"`
 	Decimals         int64  `json:"decimals" bson:"decimals"`
 	AmountStr        string `json:"amount_str" bson:"amount_str"`
-	Amount           int64  `json:"amount" bson:"amount"`
+	Amount           Amount `json:"amount" bson:"amount"`
 	ProgramID        string `json:"program_id" bson:"program_id"`
 	OuterProgramID   string `json:"outer_program_id" bson:"outer_program_id"`
 	InsIndex         int64  `json:"ins_index" bson:"ins_index"`
@@ -566,13 +611,13 @@ type TransactionAction struct {
 	BlockID    int64              `json:"block_id" bson:"block_id"`
 	BlockTime  int64              `json:"block_time" bson:"block_time"`
 	Time       string             `json:"time" bson:"time"`
-	Fee        int64              `json:"fee" bson:"fee"`
+	Fee        Amount             `json:"fee" bson:"fee"`
 	Transfers  []TxActionTransfer `json:"transfers" bson:"transfers"`
 	Activities []TxAction         `json:"activities" bson:"activities"`
 }
 
 type BlockDetail struct {
-	FeeRewards        int64  `json:"fee_rewards" bson:"fee_rewards"`
+	FeeRewards        Amount `json:"fee_rewards" bson:"fee_rewards"`
 	TransactionsCount int64  `json:"transactions_count" bson:"transactions_count"`
 	CurrentSlot       int64  `json:"current_slot" bson:"current_slot"`
 	BlockHeight       int64  `json:"block_height" bson:"block_height"`
@@ -590,34 +635,34 @@ type PoolMarket struct {
 	Token1Account  string `json:"token1_account" bson:"token1_account"`
 	Token2         string `json:"token2" bson:"token2"`
 	Token2Account  string `json:"token2_account" bson:"token2_account"`
-	TotalVolume24h int64  `json:"total_volume_24h" bson:"total_volume_24h"`
+	TotalVolume24h Amount `json:"total_volume_24h" bson:"total_volume_24h"`
 	TotalTrade24h  int64  `json:"total_trade_24h" bson:"total_trade_24h"`
 	CreatedTime    int64  `json:"created_time" bson:"created_time"`
 }
 
 type PoolMarketInfo struct {
-	PoolAddress   string  `json:"pool_address" bson:"pool_address"`
-	ProgramID     string  `json:"program_id" bson:"program_id"`
-	Token1        string  `json:"token1" bson:"token1"`
-	Token2        string  `json:"token2" bson:"token2"`
-	Token1Account string  `json:"token1_account" bson:"token1_account"`
-	Token2Account string  `json:"token2_account" bson:"token2_account"`
-	Token1Amount  float64 `json:"token1_amount" bson:"token1_amount"`
-	Token2Amount  float64 `json:"token2_amount" bson:"token2_amount"`
+	PoolAddress   string `json:"pool_address" bson:"pool_address"`
+	ProgramID     string `json:"program_id" bson:"program_id"`
+	Token1        string `json:"token1" bson:"token1"`
+	Token2        string `json:"token2" bson:"token2"`
+	Token1Account string `json:"token1_account" bson:"token1_account"`
+	Token2Account string `json:"token2_account" bson:"token2_account"`
+	Token1Amount  Amount `json:"token1_amount" bson:"token1_amount"`
+	Token2Amount  Amount `json:"token2_amount" bson:"token2_amount"`
 }
 
 type PoolMarketDayVolume struct {
-	Day    int64   `json:"day" bson:"day"` // yyyymmdd format
-	Volume float64 `json:"volume" bson:"volume"`
+	Day    int64  `json:"day" bson:"day"` // yyyymmdd format
+	Volume Amount `json:"volume" bson:"volume"`
 }
 
 type PoolMarketVolume struct {
 	PoolAddress          string                `json:"pool_address" bson:"pool_address"`
 	ProgramID            string                `json:"program_id" bson:"program_id"`
-	TotalVolume24h       int64                 `json:"total_volume_24h" bson:"total_volume_24h"`
-	TotalVolumeChange24h float64               `json:"total_volume_change_24h" bson:"total_volume_change_24h"`
-	TotalTrades24h       int64                 `json:"total_trades_24h" bson:"total_trades_24h"`
-	TotalTradesChange24h float64               `json:"total_trades_change_24h" bson:"total_trades_change_24h"`
+	TotalVolume24h       Amount                `json:"total_volume_24h" bson:"total_volume_24h"`
+	TotalVolumeChange24h Amount                `json:"total_volume_change_24h" bson:"total_volume_change_24h"`
+	TotalTrades24h       Amount                `json:"total_trades_24h" bson:"total_trades_24h"`
+	TotalTradesChange24h Amount                `json:"total_trades_change_24h" bson:"total_trades_change_24h"`
 	Days                 []PoolMarketDayVolume `json:"days" bson:"days"`
 }
 
@@ -694,7 +739,7 @@ type NFTActivity struct {
 	TokenAddress       string          `json:"token_address" bson:"token_address"`
 	MarketplaceAddress string          `json:"marketplace_address" bson:"marketplace_address"`
 	CollectionAddress  string          `json:"collection_address" bson:"collection_address"`
-	Amount             int64           `json:"amount" bson:"amount"`
+	Amount             Amount          `json:"amount" bson:"amount"`
 	Price              int64           `json:"price" bson:"price"`
 	CurrencyToken      string          `json:"currency_token" bson:"currency_token"`
 	CurrencyDecimals   int64           `json:"currency_decimals" bson:"currency_decimals"`
