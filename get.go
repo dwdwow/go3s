@@ -329,7 +329,6 @@ func (g *CcrtGetter[D]) Do(ctx context.Context) (D, error) {
 			"start", startPage+int64(i),
 			"end", startPage+int64(end),
 			"totalSize", l,
-			"url", ul,
 			"firstQuery", g.Getters[i].URL(),
 		)
 		group := g.Getters[i:end]
