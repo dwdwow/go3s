@@ -306,14 +306,32 @@ func (g *CcrtGetter[D]) Do(ctx context.Context) (D, error) {
 		g.MaxConcurrency = 1
 	}
 	l := len(g.Getters)
+	if l == 0 {
+		return *new(D), nil
+	}
 	results := make([]D, l)
 	var isRespEmpty bool
+	ul := g.Getters[0].URL()
+	query, err := url.ParseQuery(ul)
+	if err != nil {
+		return *new(D), err
+	}
+	startPage, err := strconv.ParseInt(query.Get("page"), 10, 64)
+	if err != nil {
+		logger.Error("solscan: can not get start page", "error", err.Error())
+	}
 	for i := 0; i < l; i += int(g.MaxConcurrency) {
 		end := i + int(g.MaxConcurrency)
 		if end > l {
 			end = l
 		}
-		logger.Info("solscan: concurrency", "start", i, "end", end, "total", l, "url", g.Getters[i].URL())
+		logger.Info("solscan: concurrency",
+			"start", startPage+int64(i),
+			"end", startPage+int64(end),
+			"totalSize", l,
+			"url", ul,
+			"firstQuery", g.Getters[i].URL(),
+		)
 		group := g.Getters[i:end]
 		eg, ctx := errgroup.WithContext(ctx)
 		for j, simpleGetter := range group {
@@ -331,7 +349,7 @@ func (g *CcrtGetter[D]) Do(ctx context.Context) (D, error) {
 				return nil
 			})
 		}
-		err := eg.Wait()
+		err = eg.Wait()
 		if err != nil {
 			return *new(D), err
 		}
